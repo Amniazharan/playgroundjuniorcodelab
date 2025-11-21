@@ -1,10 +1,20 @@
 import { useAuth } from '../contexts/AuthContext'
 
 export default function ProtectedRoute({ children }) {
-  const { isAuthenticated, loading } = useAuth()
+  const { isAuthenticated, loading, token, user } = useAuth()
+
+  console.log('🛡️ ProtectedRoute Check:', {
+    loading,
+    isAuthenticated,
+    hasToken: !!token,
+    hasUser: !!user,
+    userName: user?.name,
+    currentPath: window.location.pathname
+  })
 
   // Show loading state
   if (loading) {
+    console.log('⏳ ProtectedRoute: Still loading...')
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
@@ -17,8 +27,14 @@ export default function ProtectedRoute({ children }) {
 
   // Redirect to Phase 1 if not authenticated
   if (!isAuthenticated) {
+    console.warn('❌ ProtectedRoute: NOT AUTHENTICATED - Redirecting to login')
+    console.warn('   - Token:', token ? 'EXISTS' : 'NULL')
+    console.warn('   - User:', user ? 'EXISTS' : 'NULL')
+
     // Redirect to Phase 1 login with return URL
     const returnUrl = encodeURIComponent(window.location.href)
+    console.warn('   - Redirect to:', `https://juniorcodelab.com/login?redirect=${returnUrl}`)
+
     window.location.href = `https://juniorcodelab.com/login?redirect=${returnUrl}`
 
     // Show message while redirecting
@@ -43,5 +59,6 @@ export default function ProtectedRoute({ children }) {
     )
   }
 
+  console.log('✅ ProtectedRoute: AUTHENTICATED - Rendering protected content')
   return children
 }

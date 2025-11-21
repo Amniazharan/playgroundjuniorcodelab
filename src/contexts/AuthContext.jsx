@@ -19,6 +19,13 @@ export const AuthProvider = ({ children }) => {
     // Check for token in localStorage (from Phase 1)
     const checkAuth = () => {
       try {
+        // Also check URL params FIRST (for cross-domain access)
+        const urlParams = new URLSearchParams(window.location.search)
+        const urlToken = urlParams.get('token')
+
+        console.log('🌐 Current URL:', window.location.href)
+        console.log('📍 URL Token:', urlToken ? 'EXISTS (length: ' + urlToken.length + ')' : 'MISSING')
+
         // Check both Phase 1 keys (kodkids_*) and Phase 2 keys (juniorcodelab_*)
         const phase1Token = localStorage.getItem('kodkids_auth_token')
         const phase1Email = localStorage.getItem('kodkids_user_email')
@@ -27,30 +34,30 @@ export const AuthProvider = ({ children }) => {
         const phase2Token = localStorage.getItem('juniorcodelab_token')
         const phase2User = localStorage.getItem('juniorcodelab_user')
 
-        // Also check URL params (for cross-domain access)
-        const urlParams = new URLSearchParams(window.location.search)
-        const urlToken = urlParams.get('token')
-
         // Priority: URL token > Phase 1 token > Phase 2 token
         const activeToken = urlToken || phase1Token || phase2Token
 
         console.log('🔍 Auth Check:', {
+          currentUrl: window.location.href,
           hasUrlToken: !!urlToken,
+          urlTokenLength: urlToken?.length || 0,
           hasPhase1Token: !!phase1Token,
           hasPhase2Token: !!phase2Token,
           phase1Email,
-          phase1Subscription
+          phase1Subscription,
+          activeTokenSource: urlToken ? 'URL' : phase1Token ? 'Phase1' : phase2Token ? 'Phase2' : 'NONE'
         })
 
         if (activeToken) {
+          console.log('✅ Token found! Source:', urlToken ? 'URL' : phase1Token ? 'Phase1 localStorage' : 'Phase2 localStorage')
+
           setToken(activeToken)
 
           // If we got token from URL, save to both Phase 1 & Phase 2 keys
           if (urlToken) {
+            console.log('💾 Saving URL token to localStorage...')
             localStorage.setItem('kodkids_auth_token', urlToken)
             localStorage.setItem('juniorcodelab_token', urlToken)
-            // Clean URL
-            window.history.replaceState({}, '', window.location.pathname)
           }
 
           // Parse user data
@@ -58,10 +65,12 @@ export const AuthProvider = ({ children }) => {
 
           // Try Phase 2 user first
           if (phase2User) {
+            console.log('👤 Using existing Phase 2 user data')
             userData = JSON.parse(phase2User)
           }
           // Try Phase 1 email
           else if (phase1Email) {
+            console.log('👤 Creating user from Phase 1 email')
             userData = {
               email: phase1Email,
               name: phase1Email.split('@')[0],
@@ -73,32 +82,46 @@ export const AuthProvider = ({ children }) => {
           // Try decode token (Supabase JWT)
           else if (activeToken) {
             try {
+              console.log('🔐 Decoding JWT token...')
               const payload = JSON.parse(atob(activeToken.split('.')[1]))
+              console.log('📦 Token payload:', payload)
+
               userData = {
-                id: payload.sub || payload.userId,
+                id: payload.sub || payload.user_id || payload.userId,
                 email: payload.email || 'student@juniorcodelab.com',
-                name: payload.email?.split('@')[0] || 'Student',
+                name: payload.email?.split('@')[0] || payload.name || 'Student',
                 subscription: phase1Subscription || 'inactive'
               }
+              console.log('👤 User data created:', userData)
               localStorage.setItem('juniorcodelab_user', JSON.stringify(userData))
             } catch (e) {
-              console.error('Failed to decode token:', e)
+              console.error('❌ Failed to decode token:', e)
               // Fallback to basic user
               userData = {
                 email: phase1Email || 'student@juniorcodelab.com',
                 name: phase1Email?.split('@')[0] || 'Student',
                 subscription: phase1Subscription || 'inactive'
               }
+              console.log('👤 Using fallback user data:', userData)
             }
           }
 
           console.log('✅ User authenticated:', userData)
           setUser(userData)
+
+          // Clean URL AFTER everything is set
+          if (urlToken) {
+            console.log('🧹 Cleaning URL (removing token)...')
+            window.history.replaceState({}, '', window.location.pathname)
+          }
         } else {
           console.warn('⚠️ No token found anywhere!')
+          console.warn('   - URL token: MISSING')
+          console.warn('   - Phase 1 token: MISSING')
+          console.warn('   - Phase 2 token: MISSING')
         }
       } catch (error) {
-        console.error('Auth check error:', error)
+        console.error('❌ Auth check error:', error)
       } finally {
         setLoading(false)
       }
