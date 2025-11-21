@@ -1,7 +1,9 @@
 import { useAuth } from '../contexts/AuthContext'
+import { useEffect, useState } from 'react'
 
 export default function ProtectedRoute({ children }) {
   const { isAuthenticated, loading, token, user } = useAuth()
+  const [shouldRedirect, setShouldRedirect] = useState(false)
 
   console.log('🛡️ ProtectedRoute Check:', {
     loading,
@@ -9,8 +11,33 @@ export default function ProtectedRoute({ children }) {
     hasToken: !!token,
     hasUser: !!user,
     userName: user?.name,
-    currentPath: window.location.pathname
+    currentPath: window.location.pathname,
+    currentUrl: window.location.href,
+    hasTokenInUrl: window.location.search.includes('token=')
   })
+
+  // Check if we have token in URL - if yes, give AuthContext time to process
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      const urlParams = new URLSearchParams(window.location.search)
+      const urlToken = urlParams.get('token')
+
+      if (urlToken) {
+        console.log('🕐 Token found in URL, waiting for AuthContext to process...')
+        // Don't redirect yet - let AuthContext process the token first
+        setTimeout(() => {
+          console.log('⏰ Timeout reached, checking auth again...')
+          if (!isAuthenticated) {
+            console.warn('⚠️ Still not authenticated after processing token')
+            setShouldRedirect(true)
+          }
+        }, 1000) // Give 1 second for processing
+      } else {
+        console.log('🚫 No token in URL, can redirect immediately')
+        setShouldRedirect(true)
+      }
+    }
+  }, [loading, isAuthenticated])
 
   // Show loading state
   if (loading) {
@@ -25,8 +52,8 @@ export default function ProtectedRoute({ children }) {
     )
   }
 
-  // Redirect to Phase 1 if not authenticated
-  if (!isAuthenticated) {
+  // Redirect to Phase 1 if not authenticated (but only if we should redirect)
+  if (!isAuthenticated && shouldRedirect) {
     console.warn('❌ ProtectedRoute: NOT AUTHENTICATED - Redirecting to login')
     console.warn('   - Token:', token ? 'EXISTS' : 'NULL')
     console.warn('   - User:', user ? 'EXISTS' : 'NULL')
@@ -54,6 +81,19 @@ export default function ProtectedRoute({ children }) {
           >
             Go to Login
           </a>
+        </div>
+      </div>
+    )
+  }
+
+  // If not authenticated but waiting for token processing, show loading
+  if (!isAuthenticated && !shouldRedirect) {
+    console.log('⏳ Processing authentication token...')
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-orange-500 border-t-transparent"></div>
+          <p className="mt-4 text-gray-600">Authenticating...</p>
         </div>
       </div>
     )
