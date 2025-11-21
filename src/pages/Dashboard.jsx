@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { categories, exercises, getExercisesByCategory } from '../data/exercises'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 
 export default function Dashboard() {
   const [activeCategory, setActiveCategory] = useState('all')
   const navigate = useNavigate()
+  const { user, logout } = useAuth()
 
   const displayedExercises = activeCategory === 'all'
     ? exercises
@@ -24,10 +26,23 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gray-50">
       {/* Simple Header */}
       <header className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 py-4">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-500 to-blue-500 bg-clip-text text-transparent">
             🎮 JuniorCodeLab Playground
           </h1>
+          <div className="flex items-center gap-4">
+            {user && (
+              <span className="text-sm text-gray-600">
+                Hi, <span className="font-semibold">{user.name || 'Student'}</span>!
+              </span>
+            )}
+            <button
+              onClick={logout}
+              className="text-sm bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg transition-all"
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </header>
 
