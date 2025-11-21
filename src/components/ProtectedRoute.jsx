@@ -24,12 +24,39 @@ export default function ProtectedRoute({ children }) {
 
       if (urlToken) {
         console.log('🕐 Token found in URL, waiting for AuthContext to process...')
+        console.log('   Token preview:', urlToken.substring(0, 50) + '...')
+
         // Don't redirect yet - let AuthContext process the token first
         setTimeout(() => {
           console.log('⏰ Timeout reached, checking auth again...')
+          console.log('   - isAuthenticated:', isAuthenticated)
+          console.log('   - token state:', !!token)
+          console.log('   - user state:', !!user)
+
           if (!isAuthenticated) {
             console.warn('⚠️ Still not authenticated after processing token')
-            setShouldRedirect(true)
+            console.warn('   Checking localStorage one more time...')
+            const savedToken = localStorage.getItem('juniorcodelab_token') || localStorage.getItem('kodkids_auth_token')
+            console.warn('   localStorage token:', savedToken ? 'EXISTS' : 'NULL')
+
+            if (savedToken) {
+              console.warn('   Token exists in localStorage but not authenticated!')
+              console.warn('   This might be a state update timing issue - waiting a bit more...')
+
+              // Try one more time after another second
+              setTimeout(() => {
+                if (!isAuthenticated) {
+                  console.error('   Still not authenticated - redirecting now')
+                  setShouldRedirect(true)
+                } else {
+                  console.log('   ✅ Authenticated on second check!')
+                }
+              }, 1000)
+            } else {
+              setShouldRedirect(true)
+            }
+          } else {
+            console.log('   ✅ Successfully authenticated!')
           }
         }, 1000) // Give 1 second for processing
       } else {
@@ -37,7 +64,7 @@ export default function ProtectedRoute({ children }) {
         setShouldRedirect(true)
       }
     }
-  }, [loading, isAuthenticated])
+  }, [loading, isAuthenticated, token, user])
 
   // Show loading state
   if (loading) {
