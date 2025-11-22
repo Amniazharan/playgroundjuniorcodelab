@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
+import { supabase } from '../lib/supabaseClient'
 
 const AuthContext = createContext(null)
 
@@ -17,9 +18,9 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Check for token in localStorage (from Phase 1)
-    const checkAuth = () => {
+    const checkAuth = async () => {
       try {
-        // Also check URL params FIRST (for cross-domain access)
+        // Check URL params FIRST (for cross-domain access)
         const urlParams = new URLSearchParams(window.location.search)
         const urlToken = urlParams.get('token')
 
@@ -51,68 +52,106 @@ export const AuthProvider = ({ children }) => {
         if (activeToken) {
           console.log('✅ Token found! Source:', urlToken ? 'URL' : phase1Token ? 'Phase1 localStorage' : 'Phase2 localStorage')
 
-          setToken(activeToken)
+          // 🔥 VALIDATE TOKEN WITH SUPABASE
+          try {
+            console.log('🔐 Validating token with Supabase...')
+            const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
+              access_token: activeToken,
+              refresh_token: '' // Optional - Phase 1 might have refresh token
+            })
 
-          // If we got token from URL, save to both Phase 1 & Phase 2 keys
-          if (urlToken) {
-            console.log('💾 Saving URL token to localStorage...')
-            localStorage.setItem('kodkids_auth_token', urlToken)
-            localStorage.setItem('juniorcodelab_token', urlToken)
-          }
-
-          // Parse user data
-          let userData = null
-
-          // Try Phase 2 user first
-          if (phase2User) {
-            console.log('👤 Using existing Phase 2 user data')
-            userData = JSON.parse(phase2User)
-          }
-          // Try Phase 1 email
-          else if (phase1Email) {
-            console.log('👤 Creating user from Phase 1 email')
-            userData = {
-              email: phase1Email,
-              name: phase1Email.split('@')[0],
-              subscription: phase1Subscription || 'inactive'
+            if (sessionError) {
+              console.error('❌ Supabase validation failed:', sessionError.message)
+              throw sessionError
             }
-            // Save to Phase 2 format
+
+            console.log('✅ Supabase session validated!', sessionData)
+
+            // Token is VALID - set it
+            setToken(activeToken)
+
+            // If we got token from URL, save to both Phase 1 & Phase 2 keys
+            if (urlToken) {
+              console.log('💾 Saving URL token to localStorage...')
+              localStorage.setItem('kodkids_auth_token', urlToken)
+              localStorage.setItem('juniorcodelab_token', urlToken)
+            }
+
+            // Get user from Supabase session
+            const supabaseUser = sessionData.user
+            console.log('👤 Supabase User:', supabaseUser)
+
+            const userData = {
+              id: supabaseUser.id,
+              email: supabaseUser.email || phase1Email || 'student@juniorcodelab.com',
+              name: supabaseUser.email?.split('@')[0] || phase1Email?.split('@')[0] || 'Student',
+              subscription: phase1Subscription || 'inactive',
+              supabaseUser: supabaseUser
+            }
+
+            console.log('👤 User data created:', userData)
             localStorage.setItem('juniorcodelab_user', JSON.stringify(userData))
-          }
-          // Try decode token (Supabase JWT)
-          else if (activeToken) {
+
+            console.log('✅ User authenticated:', userData)
+            setUser(userData)
+
+            // Clean URL AFTER everything is set
+            if (urlToken) {
+              console.log('🧹 Cleaning URL (removing token)...')
+              window.history.replaceState({}, '', window.location.pathname)
+            }
+
+          } catch (validationError) {
+            console.error('❌ Token validation failed:', validationError)
+            console.warn('⚠️ Token invalid or expired - falling back to manual decode')
+
+            // Fallback: Try manual decode (for backward compatibility)
             try {
-              console.log('🔐 Decoding JWT token...')
+              console.log('🔐 Trying manual JWT decode as fallback...')
               const payload = JSON.parse(atob(activeToken.split('.')[1]))
               console.log('📦 Token payload:', payload)
 
-              userData = {
+              // Check if token is expired
+              if (payload.exp && payload.exp * 1000 < Date.now()) {
+                console.error('❌ Token expired!')
+                throw new Error('Token expired')
+              }
+
+              setToken(activeToken)
+
+              if (urlToken) {
+                localStorage.setItem('kodkids_auth_token', urlToken)
+                localStorage.setItem('juniorcodelab_token', urlToken)
+              }
+
+              const userData = {
                 id: payload.sub || payload.user_id || payload.userId,
-                email: payload.email || 'student@juniorcodelab.com',
-                name: payload.email?.split('@')[0] || payload.name || 'Student',
+                email: payload.email || phase1Email || 'student@juniorcodelab.com',
+                name: payload.email?.split('@')[0] || phase1Email?.split('@')[0] || 'Student',
                 subscription: phase1Subscription || 'inactive'
               }
-              console.log('👤 User data created:', userData)
+              console.log('👤 User data created (fallback):', userData)
               localStorage.setItem('juniorcodelab_user', JSON.stringify(userData))
-            } catch (e) {
-              console.error('❌ Failed to decode token:', e)
-              // Fallback to basic user
-              userData = {
-                email: phase1Email || 'student@juniorcodelab.com',
-                name: phase1Email?.split('@')[0] || 'Student',
-                subscription: phase1Subscription || 'inactive'
+
+              console.log('✅ User authenticated (fallback):', userData)
+              setUser(userData)
+
+              if (urlToken) {
+                console.log('🧹 Cleaning URL (removing token)...')
+                window.history.replaceState({}, '', window.location.pathname)
               }
-              console.log('👤 Using fallback user data:', userData)
+            } catch (decodeError) {
+              console.error('❌ Manual decode also failed:', decodeError)
+              console.error('Token is completely invalid - clearing and redirecting')
+
+              // Clear invalid tokens
+              localStorage.removeItem('kodkids_auth_token')
+              localStorage.removeItem('juniorcodelab_token')
+              localStorage.removeItem('juniorcodelab_user')
+
+              setToken(null)
+              setUser(null)
             }
-          }
-
-          console.log('✅ User authenticated:', userData)
-          setUser(userData)
-
-          // Clean URL AFTER everything is set
-          if (urlToken) {
-            console.log('🧹 Cleaning URL (removing token)...')
-            window.history.replaceState({}, '', window.location.pathname)
           }
         } else {
           console.warn('⚠️ No token found anywhere!')
@@ -137,11 +176,21 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('juniorcodelab_user', JSON.stringify(userData))
   }
 
-  const logout = () => {
+  const logout = async () => {
+    console.log('🚪 Logging out...')
+
+    // Sign out from Supabase
+    await supabase.auth.signOut()
+
     setToken(null)
     setUser(null)
     localStorage.removeItem('juniorcodelab_token')
     localStorage.removeItem('juniorcodelab_user')
+    localStorage.removeItem('kodkids_auth_token')
+    localStorage.removeItem('kodkids_user_email')
+    localStorage.removeItem('kodkids_subscription_status')
+
+    console.log('✅ Logged out, redirecting to Phase 1...')
 
     // Redirect to Phase 1
     window.location.href = 'https://juniorcodelab.com'
