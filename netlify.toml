@@ -14,6 +14,8 @@
 # Build environment
 [build.environment]
   NODE_VERSION = "18"
+  # Disable secrets scanning for Supabase anon key (safe for frontend)
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_ANON_KEY"
 
 # Redirects for SPA routing
 # This ensures React Router works correctly
