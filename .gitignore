@@ -5,3 +5,8 @@ dist
 .env
 .env.local
 package-lock.json
+
+# Ignore all markdown documentation files
+*.md
+TESTING_GUIDE.md
+PHASE2_SETUP_COMPLETE.md
