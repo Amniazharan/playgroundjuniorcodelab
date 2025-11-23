@@ -78,7 +78,6 @@ export function usePhase1AuthTransfer() {
 
         if (error) {
           console.error('❌ [Phase2] Failed to set session:', error)
-          setAuthError(error.message)
 
           // If token expired, try to use refresh token
           if (error.message.includes('expired') && authData.refresh_token) {
@@ -90,6 +89,8 @@ export function usePhase1AuthTransfer() {
             if (refreshError) {
               console.error('❌ [Phase2] Failed to refresh session:', refreshError)
               setAuthError('Session expired. Please login again from Phase 1.')
+              setIsAuthInitialized(true)
+              return
             } else {
               console.log('✅ [Phase2] Session refreshed successfully!')
               console.log('👤 [Phase2] User:', refreshData.user?.email)
@@ -100,7 +101,13 @@ export function usePhase1AuthTransfer() {
               localStorage.setItem('kodkids_subscription_status', authData.subscription_status)
 
               setAuthError(null)
+              // Continue to cleanup and set initialized below
             }
+          } else {
+            // Non-expired error, set error and stop
+            setAuthError(error.message)
+            setIsAuthInitialized(true)
+            return
           }
         } else {
           console.log('✅ [Phase2] Session set successfully!')
