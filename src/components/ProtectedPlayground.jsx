@@ -48,21 +48,42 @@ export function useSubscriptionVerification() {
 
         // 2. CRITICAL: Fetch profile from DATABASE (cannot be bypassed)
         console.log('📡 [SubscriptionCheck] Fetching profile from database...')
-        const { data: profile, error: profileError } = await supabase
+
+        // Add timeout to prevent infinite loading
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Database query timeout')), 10000)
+        )
+
+        const queryPromise = supabase
           .from('profiles')
           .select('subscription_status, email, id, full_name')
           .eq('id', session.user.id)
           .single()
 
+        const { data: profile, error: profileError } = await Promise.race([
+          queryPromise,
+          timeoutPromise
+        ]).catch(err => ({ data: null, error: err }))
+
         if (profileError) {
           console.error('❌ [SubscriptionCheck] Failed to fetch profile:', profileError)
+          console.error('📊 [SubscriptionCheck] Error details:', {
+            code: profileError.code,
+            message: profileError.message,
+            details: profileError.details,
+            hint: profileError.hint
+          })
 
           // Check if RLS is blocking the query
           if (profileError.code === 'PGRST116') {
-            console.error('⚠️ [SubscriptionCheck] RLS might be blocking - no rows returned')
-            setSubscriptionError('Ralat akses data. Sila cuba login semula.')
+            console.error('⚠️ [SubscriptionCheck] RLS blocking - no rows returned')
+            console.error('💡 [SubscriptionCheck] Make sure RLS policies are set up in Supabase')
+            setSubscriptionError('Data profil tidak dijumpai. Sila login semula.')
+          } else if (profileError.message === 'Database query timeout') {
+            console.error('⏱️ [SubscriptionCheck] Query timeout after 10 seconds')
+            setSubscriptionError('Connection timeout. Sila check internet dan cuba lagi.')
           } else {
-            setSubscriptionError('Ralat mengambil data profil. Sila cuba lagi.')
+            setSubscriptionError('Ralat mengambil data. Sila cuba lagi.')
           }
 
           setIsSubscribed(false)

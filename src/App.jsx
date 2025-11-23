@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { usePhase1AuthTransfer } from './hooks/usePhase1AuthTransfer'
-import ProtectedRoute from './components/ProtectedRoute'
 import ProtectedPlayground from './components/ProtectedPlayground'
 import Dashboard from './pages/Dashboard'
 import ExerciseWorkspace from './pages/ExerciseWorkspace'
@@ -46,28 +45,13 @@ function AppContent() {
   }
 
   // Render app normally after auth is initialized
-  // CRITICAL: Double layer protection
-  // 1. ProtectedRoute - checks authentication (session exists)
-  // 2. ProtectedPlayground - checks subscription from DATABASE
+  // CRITICAL: ProtectedPlayground handles BOTH auth AND subscription checks
+  // No need for ProtectedRoute inside - it would cause double loading
   return (
     <ProtectedPlayground>
       <Routes>
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/exercise/:id"
-          element={
-            <ProtectedRoute>
-              <ExerciseWorkspace />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/exercise/:id" element={<ExerciseWorkspace />} />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
