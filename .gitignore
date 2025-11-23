@@ -10,3 +10,4 @@ package-lock.json
 *.md
 TESTING_GUIDE.md
 PHASE2_SETUP_COMPLETE.md
+.sql 

@@ -29,10 +29,33 @@ export const AuthProvider = ({ children }) => {
           console.log('👤 [AuthContext] User:', currentSession.user.email)
           setSession(currentSession)
 
-          // Get additional user data from localStorage
+          // CRITICAL: Fetch subscription status from DATABASE (not localStorage)
+          console.log('📡 [AuthContext] Fetching profile from database...')
+          const { data: profile, error: profileError } = await supabase
+            .from('profiles')
+            .select('subscription_status, email, id, full_name')
+            .eq('id', currentSession.user.id)
+            .single()
+
+          let subscriptionStatus = 'inactive'
+
+          if (profileError) {
+            console.error('❌ [AuthContext] Failed to fetch profile:', profileError)
+            // Fallback to localStorage (but user will be blocked by ProtectedPlayground)
+            subscriptionStatus = localStorage.getItem('kodkids_subscription_status') || 'inactive'
+            console.warn('⚠️ [AuthContext] Using localStorage as fallback (NOT SECURE)')
+          } else {
+            console.log('✅ [AuthContext] Profile fetched from database')
+            subscriptionStatus = profile.subscription_status || 'inactive'
+
+            // Update localStorage with database value (source of truth)
+            localStorage.setItem('kodkids_subscription_status', subscriptionStatus)
+
+            console.log('📊 [AuthContext] Subscription status from DB:', subscriptionStatus)
+          }
+
           const userEmail = localStorage.getItem('kodkids_user_email') || currentSession.user.email
           const userId = localStorage.getItem('kodkids_user_id') || currentSession.user.id
-          const subscriptionStatus = localStorage.getItem('kodkids_subscription_status') || 'inactive'
 
           setUser({
             id: userId,
@@ -44,7 +67,8 @@ export const AuthProvider = ({ children }) => {
 
           console.log('👤 [AuthContext] User data set:', {
             email: userEmail,
-            subscription: subscriptionStatus
+            subscription: subscriptionStatus,
+            source: profileError ? 'localStorage (fallback)' : 'database'
           })
         } else {
           console.log('ℹ️ [AuthContext] No session found')
@@ -71,9 +95,27 @@ export const AuthProvider = ({ children }) => {
         setSession(currentSession)
 
         if (currentSession?.user) {
+          // CRITICAL: Fetch subscription from database
+          console.log('📡 [AuthContext] Fetching profile on auth state change...')
+          const { data: profile, error: profileError } = await supabase
+            .from('profiles')
+            .select('subscription_status')
+            .eq('id', currentSession.user.id)
+            .single()
+
+          let subscriptionStatus = 'inactive'
+
+          if (profileError) {
+            console.error('❌ [AuthContext] Failed to fetch profile on state change:', profileError)
+            subscriptionStatus = localStorage.getItem('kodkids_subscription_status') || 'inactive'
+          } else {
+            subscriptionStatus = profile.subscription_status || 'inactive'
+            localStorage.setItem('kodkids_subscription_status', subscriptionStatus)
+            console.log('📊 [AuthContext] Updated subscription from DB:', subscriptionStatus)
+          }
+
           const userEmail = localStorage.getItem('kodkids_user_email') || currentSession.user.email
           const userId = localStorage.getItem('kodkids_user_id') || currentSession.user.id
-          const subscriptionStatus = localStorage.getItem('kodkids_subscription_status') || 'inactive'
 
           setUser({
             id: userId,
