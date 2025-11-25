@@ -40,7 +40,7 @@ export default function ProtectedRoute({ children }) {
             {error}
           </p>
           <a
-            href="https://kodkids.netlify.app/Login"
+            href="https://juniorcodelab.com/Login"
             style={{
               display: 'inline-block',
               background: '#dc2626',
@@ -77,7 +77,7 @@ export default function ProtectedRoute({ children }) {
             You need to login to access the playground
           </p>
           <a
-            href="https://kodkids.netlify.app/Login"
+            href="https://juniorcodelab.com/Login"
             style={{
               display: 'inline-block',
               background: '#3b82f6',
@@ -131,7 +131,7 @@ export default function ProtectedRoute({ children }) {
           )}
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <a
-              href="https://kodkids.netlify.app/Subscribe"
+              href="https://juniorcodelab.com/Subscribe"
               style={{
                 display: 'inline-block',
                 background: 'white',
@@ -145,7 +145,7 @@ export default function ProtectedRoute({ children }) {
               Subscribe Now
             </a>
             <a
-              href="https://kodkids.netlify.app"
+              href="https://juniorcodelab.com"
               style={{
                 display: 'inline-block',
                 background: 'rgba(255,255,255,0.2)',

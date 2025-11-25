@@ -185,7 +185,7 @@ export const AuthProvider = ({ children }) => {
       setProfile(null)
       setError(null)
       console.log('✅ [AuthContext] Logged out')
-      window.location.href = 'https://kodkids.netlify.app/Login'
+      window.location.href = 'https://juniorcodelab.com/Login'
     } catch (error) {
       console.error('❌ [AuthContext] Logout error:', error)
     }
