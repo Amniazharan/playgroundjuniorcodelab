@@ -177,11 +177,26 @@ export const AuthProvider = ({ children }) => {
     return () => subscription.unsubscribe()
   }, [])
 
+  const logout = async () => {
+    try {
+      console.log('🚪 [AuthContext] Logging out...')
+      await supabase.auth.signOut()
+      setUser(null)
+      setProfile(null)
+      setError(null)
+      console.log('✅ [AuthContext] Logged out')
+      window.location.href = 'https://kodkids.netlify.app/Login'
+    } catch (error) {
+      console.error('❌ [AuthContext] Logout error:', error)
+    }
+  }
+
   const value = {
     user,
     profile,
     loading,
     error,
+    logout,
     isAuthenticated: !!user,
     isSubscribed: profile?.subscription_status === 'active'
   }

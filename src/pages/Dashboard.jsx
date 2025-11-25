@@ -7,7 +7,7 @@ import { useAuth } from '../contexts/AuthContext'
 export default function Dashboard() {
   const [activeCategory, setActiveCategory] = useState('all')
   const navigate = useNavigate()
-  const { user, logout } = useAuth()
+  const { user, profile, logout } = useAuth()
 
   const displayedExercises = activeCategory === 'all'
     ? exercises
@@ -33,7 +33,7 @@ export default function Dashboard() {
           <div className="flex items-center gap-4">
             {user && (
               <span className="text-sm text-gray-600">
-                Hi, <span className="font-semibold">{user.name || 'Student'}</span>!
+                Hi, <span className="font-semibold">{profile?.full_name || user.email?.split('@')[0] || 'Student'}</span>!
               </span>
             )}
             <button
