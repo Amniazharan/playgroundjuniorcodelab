@@ -31,9 +31,15 @@ export const AuthProvider = ({ children }) => {
             })
 
             // Set session
-            const { data: { user: verifiedUser }, error: sessionError } = await supabase.auth.setSession({
+            console.log('🔄 [AuthContext] Setting session...')
+            const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
               access_token: authData.access_token,
               refresh_token: authData.refresh_token
+            })
+
+            console.log('📦 [AuthContext] Session result:', {
+              hasUser: !!sessionData?.user,
+              hasError: !!sessionError
             })
 
             if (sessionError) {
@@ -43,28 +49,54 @@ export const AuthProvider = ({ children }) => {
               return
             }
 
+            const verifiedUser = sessionData?.user
+            console.log('👤 [AuthContext] Verified user:', verifiedUser?.email)
+
             if (verifiedUser) {
               console.log('✅ [AuthContext] User verified:', verifiedUser.email)
               setUser(verifiedUser)
 
               // Fetch profile
-              console.log('📡 [AuthContext] Fetching profile...')
-              const { data: profileData, error: profileError } = await supabase
-                .from('profiles')
-                .select('*')
-                .eq('id', verifiedUser.id)
-                .single()
+              console.log('📡 [AuthContext] Fetching profile from database...')
+              console.log('🔑 [AuthContext] User ID:', verifiedUser.id)
 
-              if (profileError) {
-                console.error('❌ [AuthContext] Profile error:', profileError)
-                setError(`Profile error: ${profileError.message}`)
-              } else {
-                console.log('✅ [AuthContext] Profile loaded:', profileData)
-                setProfile(profileData)
+              try {
+                const { data: profileData, error: profileError } = await supabase
+                  .from('profiles')
+                  .select('*')
+                  .eq('id', verifiedUser.id)
+                  .single()
+
+                console.log('📦 [AuthContext] Profile fetch result:', {
+                  hasData: !!profileData,
+                  hasError: !!profileError
+                })
+
+                if (profileError) {
+                  console.error('❌ [AuthContext] Profile error:', profileError)
+                  console.error('📋 [AuthContext] Error details:', {
+                    message: profileError.message,
+                    code: profileError.code,
+                    hint: profileError.hint
+                  })
+                  setError(`Profile error: ${profileError.message}`)
+                } else {
+                  console.log('✅ [AuthContext] Profile loaded successfully!')
+                  console.log('📊 [AuthContext] Profile data:', {
+                    email: profileData.email,
+                    subscription_status: profileData.subscription_status
+                  })
+                  setProfile(profileData)
+                }
+              } catch (fetchError) {
+                console.error('❌ [AuthContext] Profile fetch exception:', fetchError)
+                setError(`Profile fetch failed: ${fetchError.message}`)
               }
 
               // Clean URL
+              console.log('🧹 [AuthContext] Cleaning URL...')
               window.history.replaceState({}, document.title, window.location.pathname)
+              console.log('✨ [AuthContext] URL cleaned')
             }
           } catch (decodeError) {
             console.error('❌ [AuthContext] Decode error:', decodeError)
@@ -102,20 +134,32 @@ export const AuthProvider = ({ children }) => {
         console.error('❌ [AuthContext] Init error:', error)
         setError(error.message)
       } finally {
+        console.log('🏁 [AuthContext] Setting loading = false')
         setLoading(false)
+        console.log('✅ [AuthContext] Auth initialization complete!')
       }
     }
 
     initAuth()
 
-    // Listen for auth changes
+    // Listen for auth changes (but ignore during initial load)
+    let isInitialLoad = true
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('🔄 [AuthContext] Auth event:', event)
+      console.log('🔄 [AuthContext] Auth event:', event, '(initial:', isInitialLoad, ')')
+
+      // Skip handling during initial auth setup
+      if (isInitialLoad && event === 'SIGNED_IN') {
+        console.log('⏭️ [AuthContext] Skipping SIGNED_IN during initial load')
+        isInitialLoad = false
+        return
+      }
 
       if (event === 'SIGNED_OUT') {
+        console.log('🚪 [AuthContext] User signed out')
         setUser(null)
         setProfile(null)
-      } else if (session?.user) {
+      } else if (event === 'TOKEN_REFRESHED' && session?.user) {
+        console.log('🔄 [AuthContext] Token refreshed')
         setUser(session.user)
 
         const { data: profileData } = await supabase
