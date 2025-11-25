@@ -1,187 +1,170 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 
-const AuthContext = createContext(null)
+const AuthContext = createContext({})
 
-export const useAuth = () => {
-  const context = useContext(AuthContext)
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider')
-  }
-  return context
-}
+export const useAuth = () => useContext(AuthContext)
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
+  const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [session, setSession] = useState(null)
+  const [authChecked, setAuthChecked] = useState(false)
 
   useEffect(() => {
-    // Get initial session
-    const initializeAuth = async () => {
+    // Initialize authentication from URL or localStorage
+    const initAuth = async () => {
       try {
-        console.log('🔍 [AuthContext] Initializing auth...')
+        // 1. Check URL parameter first (from Phase 1 redirect)
+        const urlParams = new URLSearchParams(window.location.search)
+        const authParam = urlParams.get('auth')
 
-        const { data: { session: currentSession } } = await supabase.auth.getSession()
+        if (authParam) {
+          console.log('🔐 Found auth data in URL')
 
-        if (currentSession) {
-          console.log('✅ [AuthContext] Session found!')
-          console.log('👤 [AuthContext] User:', currentSession.user.email)
-          setSession(currentSession)
+          try {
+            // Decode auth data from URL
+            const authData = JSON.parse(atob(authParam))
+            console.log('📦 Decoded auth data:', authData)
 
-          // CRITICAL: Fetch subscription status from DATABASE (not localStorage)
-          console.log('📡 [AuthContext] Fetching profile from database...')
-          const { data: profile, error: profileError } = await supabase
-            .from('profiles')
-            .select('subscription_status, email, id, full_name')
-            .eq('id', currentSession.user.id)
-            .single()
+            // Verify token with Supabase
+            const { data: { user: verifiedUser }, error } = await supabase.auth.setSession({
+              access_token: authData.access_token,
+              refresh_token: authData.refresh_token
+            })
 
-          let subscriptionStatus = 'inactive'
+            if (error) {
+              console.error('❌ Token verification failed:', error)
+              throw error
+            }
 
-          if (profileError) {
-            console.error('❌ [AuthContext] Failed to fetch profile:', profileError)
-            // Fallback to localStorage (but user will be blocked by ProtectedPlayground)
-            subscriptionStatus = localStorage.getItem('kodkids_subscription_status') || 'inactive'
-            console.warn('⚠️ [AuthContext] Using localStorage as fallback (NOT SECURE)')
-          } else {
-            console.log('✅ [AuthContext] Profile fetched from database')
-            subscriptionStatus = profile.subscription_status || 'inactive'
+            if (verifiedUser) {
+              console.log('✅ User verified:', verifiedUser.email)
 
-            // Update localStorage with database value (source of truth)
-            localStorage.setItem('kodkids_subscription_status', subscriptionStatus)
+              // Fetch profile with subscription status
+              const { data: profileData, error: profileError } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', verifiedUser.id)
+                .single()
 
-            console.log('📊 [AuthContext] Subscription status from DB:', subscriptionStatus)
+              if (profileError) {
+                console.error('❌ Profile fetch failed:', profileError)
+              } else {
+                console.log('👤 Profile loaded:', profileData)
+                setProfile(profileData)
+
+                // Check subscription status
+                if (profileData.subscription_status !== 'active') {
+                  console.log('❌ User not subscribed')
+                  alert('⚠️ Playground hanya untuk pengguna berbayar!\n\nAnda akan diredirect ke halaman subscribe.')
+                  // Redirect back to Phase 1 subscribe page
+                  window.location.href = 'https://kodkids.netlify.app/Subscribe'
+                  return
+                }
+              }
+
+              setUser(verifiedUser)
+
+              // Clean URL (remove auth parameter for security)
+              window.history.replaceState({}, document.title, window.location.pathname)
+            }
+          } catch (decodeError) {
+            console.error('❌ Failed to decode auth data:', decodeError)
           }
-
-          const userEmail = localStorage.getItem('kodkids_user_email') || currentSession.user.email
-          const userId = localStorage.getItem('kodkids_user_id') || currentSession.user.id
-
-          setUser({
-            id: userId,
-            email: userEmail,
-            name: userEmail.split('@')[0],
-            subscription: subscriptionStatus,
-            supabaseUser: currentSession.user
-          })
-
-          console.log('👤 [AuthContext] User data set:', {
-            email: userEmail,
-            subscription: subscriptionStatus,
-            source: profileError ? 'localStorage (fallback)' : 'database'
-          })
         } else {
-          console.log('ℹ️ [AuthContext] No session found')
-          setUser(null)
-          setSession(null)
+          // 2. Check existing session
+          console.log('🔍 Checking existing session...')
+          const { data: { session } } = await supabase.auth.getSession()
+
+          if (session?.user) {
+            console.log('✅ Found existing session:', session.user.email)
+            setUser(session.user)
+
+            // Fetch profile
+            const { data: profileData } = await supabase
+              .from('profiles')
+              .select('*')
+              .eq('id', session.user.id)
+              .single()
+
+            if (profileData) {
+              setProfile(profileData)
+
+              // Check subscription
+              if (profileData.subscription_status !== 'active') {
+                console.log('❌ User not subscribed')
+                alert('⚠️ Subscription anda telah tamat atau tidak aktif!\n\nAnda akan diredirect ke halaman subscribe.')
+                window.location.href = 'https://kodkids.netlify.app/Subscribe'
+                return
+              }
+            }
+          } else {
+            // No authentication found
+            console.log('❌ No authentication found')
+            alert('⚠️ Anda perlu login terlebih dahulu!\n\nAnda akan diredirect ke halaman login.')
+            window.location.href = 'https://kodkids.netlify.app/Login'
+            return
+          }
         }
       } catch (error) {
-        console.error('❌ [AuthContext] Error initializing auth:', error)
-        setUser(null)
-        setSession(null)
+        console.error('❌ Auth initialization error:', error)
+        alert('⚠️ Masalah authentication! Sila login semula.')
+        window.location.href = 'https://kodkids.netlify.app/Login'
       } finally {
         setLoading(false)
+        setAuthChecked(true)
       }
     }
 
-    initializeAuth()
+    initAuth()
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
-      console.log('🔔 [AuthContext] Auth state changed:', event)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log('🔄 Auth state changed:', event)
 
-      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-        console.log('✅ [AuthContext] User signed in or token refreshed')
-        setSession(currentSession)
+        if (event === 'SIGNED_OUT') {
+          setUser(null)
+          setProfile(null)
+          window.location.href = 'https://kodkids.netlify.app/Login'
+        } else if (session?.user) {
+          setUser(session.user)
 
-        if (currentSession?.user) {
-          // CRITICAL: Fetch subscription from database
-          console.log('📡 [AuthContext] Fetching profile on auth state change...')
-          const { data: profile, error: profileError } = await supabase
+          // Fetch profile
+          const { data: profileData } = await supabase
             .from('profiles')
-            .select('subscription_status')
-            .eq('id', currentSession.user.id)
+            .select('*')
+            .eq('id', session.user.id)
             .single()
 
-          let subscriptionStatus = 'inactive'
+          if (profileData) {
+            setProfile(profileData)
 
-          if (profileError) {
-            console.error('❌ [AuthContext] Failed to fetch profile on state change:', profileError)
-            subscriptionStatus = localStorage.getItem('kodkids_subscription_status') || 'inactive'
-          } else {
-            subscriptionStatus = profile.subscription_status || 'inactive'
-            localStorage.setItem('kodkids_subscription_status', subscriptionStatus)
-            console.log('📊 [AuthContext] Updated subscription from DB:', subscriptionStatus)
+            // Check subscription
+            if (profileData.subscription_status !== 'active') {
+              alert('⚠️ Subscription anda tidak aktif!')
+              window.location.href = 'https://kodkids.netlify.app/Subscribe'
+            }
           }
-
-          const userEmail = localStorage.getItem('kodkids_user_email') || currentSession.user.email
-          const userId = localStorage.getItem('kodkids_user_id') || currentSession.user.id
-
-          setUser({
-            id: userId,
-            email: userEmail,
-            name: userEmail.split('@')[0],
-            subscription: subscriptionStatus,
-            supabaseUser: currentSession.user
-          })
         }
-      } else if (event === 'SIGNED_OUT') {
-        console.log('🚪 [AuthContext] User signed out')
-        setUser(null)
-        setSession(null)
-
-        // Clear localStorage
-        localStorage.removeItem('kodkids_user_email')
-        localStorage.removeItem('kodkids_user_id')
-        localStorage.removeItem('kodkids_subscription_status')
       }
+    )
 
-      setLoading(false)
-    })
-
-    // Cleanup subscription
-    return () => {
-      subscription.unsubscribe()
-    }
+    return () => subscription.unsubscribe()
   }, [])
-
-  const logout = async () => {
-    try {
-      console.log('🚪 [AuthContext] Logging out...')
-
-      // Sign out from Supabase
-      await supabase.auth.signOut()
-
-      // Clear all auth data
-      setUser(null)
-      setSession(null)
-
-      // Clear localStorage
-      localStorage.removeItem('kodkids_user_email')
-      localStorage.removeItem('kodkids_user_id')
-      localStorage.removeItem('kodkids_subscription_status')
-
-      console.log('✅ [AuthContext] Logged out successfully')
-      console.log('🔄 [AuthContext] Redirecting to Phase 1...')
-
-      // Redirect to Phase 1
-      window.location.href = 'https://juniorcodelab.com'
-    } catch (error) {
-      console.error('❌ [AuthContext] Error during logout:', error)
-    }
-  }
 
   const value = {
     user,
-    session,
+    profile,
     loading,
-    isAuthenticated: !!session && !!user,
-    logout
+    authChecked,
+    isSubscribed: profile?.subscription_status === 'active'
   }
 
   return (
     <AuthContext.Provider value={value}>
-      {children}
+      {!loading && authChecked && children}
     </AuthContext.Provider>
   )
 }
