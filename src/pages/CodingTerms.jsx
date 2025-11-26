@@ -107,6 +107,203 @@ const fillInBlanks = [
   }
 ]
 
+// Logic Exercises - Brain Training!
+const logicExercises = [
+  {
+    id: 1,
+    type: 'if-else',
+    title: '🌦️ Cuaca Hari Ini',
+    scenario: 'Ali tengok cuaca pagi ini. Kalau HUJAN, dia akan bawa PAYUNG. Kalau TIDAK HUJAN, dia bawa TOPI.',
+    question: 'Hari ini HUJAN. Apa yang Ali bawa?',
+    options: ['Payung ☔', 'Topi 🎩', 'Tiada apa-apa'],
+    answer: 'Payung ☔',
+    explanation: 'IF hujan = TRUE, THEN bawa payung. Ini konsep IF-ELSE!'
+  },
+  {
+    id: 2,
+    type: 'if-else',
+    title: '🌡️ Suhu Hari Ini',
+    scenario: 'IF suhu > 30°C, pakai baju PENDEK.\nELSE IF suhu > 20°C, pakai baju BIASA.\nELSE, pakai JAKET.',
+    question: 'Hari ini suhu 25°C. Apa yang kena pakai?',
+    options: ['Baju Pendek 👕', 'Baju Biasa 👔', 'Jaket 🧥'],
+    answer: 'Baju Biasa 👔',
+    explanation: '25°C tidak lebih dari 30°C, tetapi lebih dari 20°C. Jadi pilih baju BIASA!'
+  },
+  {
+    id: 3,
+    type: 'loop',
+    title: '🔁 Ulang 5 Kali',
+    scenario: 'REPEAT 5 times: Tepuk tangan 👏\nBerapa kali Ali tepuk tangan?',
+    question: 'Pilih jawapan yang betul:',
+    options: ['1 kali', '5 kali', '10 kali'],
+    answer: '5 kali',
+    explanation: 'LOOP ulang 5 kali, jadi tepuk tangan 5 kali. Ini konsep LOOP!'
+  },
+  {
+    id: 4,
+    type: 'loop',
+    title: '🍪 Kumpul Cookies',
+    scenario: 'Siti ada 0 cookies.\nREPEAT 3 times: Ambil 2 cookies\nBerapa cookies Siti ada sekarang?',
+    question: 'Jumlah cookies:',
+    options: ['2 cookies', '4 cookies', '6 cookies'],
+    answer: '6 cookies',
+    explanation: 'Ulang 3 kali, setiap kali ambil 2. Jadi 2+2+2 = 6 cookies!'
+  },
+  {
+    id: 5,
+    type: 'variable',
+    title: '📦 Kotak Ajaib',
+    scenario: 'box = 10\nbox = box + 5\nBerapa nilai box sekarang?',
+    question: 'Nilai dalam box:',
+    options: ['5', '10', '15'],
+    answer: '15',
+    explanation: 'box mula-mula 10, kemudian tambah 5. Jadi 10 + 5 = 15!'
+  },
+  {
+    id: 6,
+    type: 'variable',
+    title: '🎒 Beg Sekolah',
+    scenario: 'buku = 3\npensil = 5\njumla = buku + pensil\nBerapa nilai jumla?',
+    question: 'Nilai jumla:',
+    options: ['3', '5', '8'],
+    answer: '8',
+    explanation: 'Variable buku = 3, pensil = 5. Jadi jumla = 3 + 5 = 8!'
+  },
+  {
+    id: 7,
+    type: 'array',
+    title: '🗃️ Bakul Buah',
+    scenario: 'buah = ["epal", "oren", "pisang"]\nBerapa BANYAK buah dalam array?',
+    question: 'Jumlah item:',
+    options: ['2 item', '3 item', '4 item'],
+    answer: '3 item',
+    explanation: 'Array ada 3 item: epal, oren, pisang. Ini konsep ARRAY LENGTH!'
+  },
+  {
+    id: 8,
+    type: 'array',
+    title: '📍 Index dalam Array',
+    scenario: 'nama = ["Ali", "Siti", "Ahmad"]\nApa yang ada di index 0?',
+    question: 'Item di index 0:',
+    options: ['Ali', 'Siti', 'Ahmad'],
+    answer: 'Ali',
+    explanation: 'Index bermula dari 0! Jadi index 0 = Ali, index 1 = Siti, index 2 = Ahmad.'
+  },
+  {
+    id: 9,
+    type: 'if-else',
+    title: '💯 Markah Peperiksaan',
+    scenario: 'IF markah >= 80, dapat A.\nELSE IF markah >= 60, dapat B.\nELSE, dapat C.',
+    question: 'Ahmad dapat markah 75. Gred apa dia dapat?',
+    options: ['Gred A', 'Gred B', 'Gred C'],
+    answer: 'Gred B',
+    explanation: '75 tidak sampai 80 (bukan A), tetapi lebih dari 60. Jadi dapat B!'
+  },
+  {
+    id: 10,
+    type: 'loop',
+    title: '🌟 Lukis Bintang',
+    scenario: 'stars = 0\nREPEAT 4 times:\n  stars = stars + 1\nBerapa nilai stars?',
+    question: 'Nilai akhir stars:',
+    options: ['1', '4', '5'],
+    answer: '4',
+    explanation: 'Bermula 0, kemudian tambah 1 sebanyak 4 kali. Jadi 0+1+1+1+1 = 4!'
+  },
+  {
+    id: 11,
+    type: 'boolean',
+    title: '✅ TRUE atau FALSE',
+    scenario: 'hujan = true\nayah = false\nIF hujan AND panas, pergi pantai.',
+    question: 'Adakah mereka pergi pantai?',
+    options: ['Ya, pergi', 'Tidak pergi'],
+    answer: 'Tidak pergi',
+    explanation: 'Hujan = TRUE tetapi panas = FALSE. Untuk AND, KEDUA-DUA mesti TRUE!'
+  },
+  {
+    id: 12,
+    type: 'complex',
+    title: '🧠 Cabaran Otak!',
+    scenario: 'x = 5\nIF x > 3:\n  x = x * 2\nELSE:\n  x = x + 10\nBerapa nilai x?',
+    question: 'Nilai akhir x:',
+    options: ['10', '15', '25'],
+    answer: '10',
+    explanation: '5 lebih besar dari 3 (TRUE), jadi x = 5 * 2 = 10. Tidak masuk ELSE!'
+  }
+]
+
+// Code Pattern Recognition
+const codePatterns = [
+  {
+    id: 1,
+    title: '🔍 Cari Pattern',
+    code: `for i in range(3):
+  print("Hello")`,
+    question: 'Berapa kali "Hello" akan diprint?',
+    options: ['1 kali', '3 kali', '5 kali'],
+    answer: '3 kali',
+    hint: 'range(3) bermaksud 0, 1, 2 - jadi 3 kali!'
+  },
+  {
+    id: 2,
+    title: '🔢 Matematik dalam Code',
+    code: `a = 10
+b = 20
+c = a + b
+print(c)`,
+    question: 'Apa output yang akan keluar?',
+    options: ['10', '20', '30'],
+    answer: '30',
+    hint: 'a + b = 10 + 20 = 30'
+  },
+  {
+    id: 3,
+    title: '🎯 Predict Output',
+    code: `count = 0
+for i in range(5):
+  count = count + 1
+print(count)`,
+    question: 'Apa nilai count yang akan diprint?',
+    options: ['0', '5', '10'],
+    answer: '5',
+    hint: 'Loop 5 kali, setiap kali tambah 1. Jadi 0+1+1+1+1+1 = 5'
+  },
+  {
+    id: 4,
+    title: '✅ TRUE or FALSE?',
+    code: `x = 15
+if x > 10:
+  print("Big")
+else:
+  print("Small")`,
+    question: 'Apa yang akan diprint?',
+    options: ['Big', 'Small', 'Tiada output'],
+    answer: 'Big',
+    hint: '15 lebih besar dari 10, jadi print "Big"!'
+  },
+  {
+    id: 5,
+    title: '🗃️ Array Magic',
+    code: `fruits = ["epal", "oren", "pisang"]
+print(fruits[1])`,
+    question: 'Apa yang akan diprint?',
+    options: ['epal', 'oren', 'pisang'],
+    answer: 'oren',
+    hint: 'Index [1] adalah item KEDUA! (Index start dari 0)'
+  },
+  {
+    id: 6,
+    title: '🔁 Loop dalam Loop',
+    code: `total = 0
+for i in range(3):
+  total = total + 2
+print(total)`,
+    question: 'Apa output?',
+    options: ['2', '3', '6'],
+    answer: '6',
+    hint: 'Ulang 3 kali, setiap kali tambah 2. Jadi 0+2+2+2 = 6'
+  }
+]
+
 export default function CodingTerms() {
   const [activeTab, setActiveTab] = useState('flip-cards')
   const navigate = useNavigate()
@@ -158,6 +355,17 @@ export default function CodingTerms() {
             <p className="text-xl md:text-2xl mb-6">
               Aktiviti yang fun dan mudah diingat untuk kanak-kanak!
             </p>
+            <div className="flex gap-4 justify-center items-center flex-wrap text-sm md:text-base">
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
+                🎴 {codingTerms.length} Flip Cards
+              </div>
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
+                🧠 {logicExercises.length} Latihan Logik
+              </div>
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
+                🔍 {codePatterns.length} Pattern Quiz
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -196,6 +404,26 @@ export default function CodingTerms() {
             >
               ✏️ Isi Tempat Kosong
             </button>
+            <button
+              onClick={() => setActiveTab('logic-exercise')}
+              className={`px-6 py-3 rounded-lg font-medium whitespace-nowrap transition-all ${
+                activeTab === 'logic-exercise'
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              🧠 Latihan Logik
+            </button>
+            <button
+              onClick={() => setActiveTab('code-patterns')}
+              className={`px-6 py-3 rounded-lg font-medium whitespace-nowrap transition-all ${
+                activeTab === 'code-patterns'
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              🔍 Cari Pattern
+            </button>
           </div>
         </div>
       </section>
@@ -206,6 +434,8 @@ export default function CodingTerms() {
           {activeTab === 'flip-cards' && <FlipCardsActivity key="flip-cards" />}
           {activeTab === 'matching' && <MatchingActivity key="matching" />}
           {activeTab === 'fill-blanks' && <FillBlanksActivity key="fill-blanks" />}
+          {activeTab === 'logic-exercise' && <LogicExerciseActivity key="logic-exercise" />}
+          {activeTab === 'code-patterns' && <CodePatternsActivity key="code-patterns" />}
         </AnimatePresence>
       </section>
     </div>
@@ -569,6 +799,374 @@ function FillBlanksActivity() {
             }`}
           >
             {isCorrect ? '🎉 Betul! Tahniah!' : '💪 Cuba lagi! Anda boleh buat!'}
+          </motion.div>
+        )}
+      </motion.div>
+    </motion.div>
+  )
+}
+
+// Logic Exercise Activity Component - Brain Training!
+function LogicExerciseActivity() {
+  const [currentQuestion, setCurrentQuestion] = useState(0)
+  const [selectedAnswer, setSelectedAnswer] = useState(null)
+  const [isCorrect, setIsCorrect] = useState(null)
+  const [score, setScore] = useState(0)
+  const [completed, setCompleted] = useState(false)
+  const [showExplanation, setShowExplanation] = useState(false)
+
+  const exercise = logicExercises[currentQuestion]
+
+  const handleAnswerClick = (answer) => {
+    setSelectedAnswer(answer)
+    const correct = answer === exercise.answer
+    setIsCorrect(correct)
+    setShowExplanation(true)
+
+    if (correct) {
+      setScore(score + 10)
+    }
+  }
+
+  const handleNext = () => {
+    if (currentQuestion < logicExercises.length - 1) {
+      setCurrentQuestion(currentQuestion + 1)
+      setSelectedAnswer(null)
+      setIsCorrect(null)
+      setShowExplanation(false)
+    } else {
+      setCompleted(true)
+    }
+  }
+
+  const resetQuiz = () => {
+    setCurrentQuestion(0)
+    setSelectedAnswer(null)
+    setIsCorrect(null)
+    setScore(0)
+    setCompleted(false)
+    setShowExplanation(false)
+  }
+
+  if (completed) {
+    const totalPoints = logicExercises.length * 10
+    const percentage = Math.round((score / totalPoints) * 100)
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="text-center"
+      >
+        <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-12 rounded-2xl shadow-2xl max-w-2xl mx-auto">
+          <div className="text-6xl mb-4">
+            {percentage >= 80 ? '🏆' : percentage >= 60 ? '🎉' : '💪'}
+          </div>
+          <h2 className="text-4xl font-bold mb-4">
+            {percentage >= 80 ? 'Cemerlang!' : percentage >= 60 ? 'Bagus!' : 'Teruskan Usaha!'}
+          </h2>
+          <p className="text-2xl mb-6">Anda telah selesai semua latihan logik!</p>
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-6">
+            <p className="text-xl mb-2">Skor Akhir:</p>
+            <p className="text-5xl font-bold mb-2">{score} / {totalPoints}</p>
+            <p className="text-lg">({percentage}%)</p>
+          </div>
+          <button
+            onClick={resetQuiz}
+            className="bg-white text-purple-600 px-8 py-4 rounded-xl font-bold text-lg hover:shadow-lg transition-all"
+          >
+            🔄 Cuba Lagi
+          </button>
+        </div>
+      </motion.div>
+    )
+  }
+
+  // Get emoji based on exercise type
+  const getTypeEmoji = (type) => {
+    switch(type) {
+      case 'if-else': return '🤔'
+      case 'loop': return '🔁'
+      case 'variable': return '📦'
+      case 'array': return '🗃️'
+      case 'boolean': return '✅'
+      case 'complex': return '🧠'
+      default: return '💡'
+    }
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3 }}
+      className="max-w-4xl mx-auto"
+    >
+      <div className="mb-8 text-center">
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">🧠 Latihan Logik - Brain Training!</h2>
+        <p className="text-gray-600 mb-4">Uji pemahaman konsep coding dengan senario sebenar</p>
+        <div className="flex gap-4 justify-center flex-wrap">
+          <div className="bg-purple-100 text-purple-800 px-6 py-2 rounded-full font-bold">
+            Soalan {currentQuestion + 1} / {logicExercises.length}
+          </div>
+          <div className="bg-pink-100 text-pink-800 px-6 py-2 rounded-full font-bold">
+            Skor: {score}
+          </div>
+          <div className="bg-blue-100 text-blue-800 px-6 py-2 rounded-full font-bold">
+            {getTypeEmoji(exercise.type)} {exercise.type.toUpperCase()}
+          </div>
+        </div>
+      </div>
+
+      <motion.div
+        key={currentQuestion}
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="bg-white rounded-2xl shadow-xl p-8"
+      >
+        <div className="mb-6">
+          <h3 className="text-2xl font-bold text-purple-600 mb-4">{exercise.title}</h3>
+
+          {/* Scenario Box */}
+          <div className="bg-gray-50 rounded-xl p-6 mb-6 border-l-4 border-purple-500">
+            <p className="text-lg text-gray-800 whitespace-pre-line font-mono leading-relaxed">
+              {exercise.scenario}
+            </p>
+          </div>
+
+          {/* Question */}
+          <p className="text-xl font-bold text-gray-900 mb-6">
+            ❓ {exercise.question}
+          </p>
+        </div>
+
+        {/* Options */}
+        <div className="grid gap-4 mb-6">
+          {exercise.options.map((option, index) => (
+            <motion.button
+              key={index}
+              onClick={() => handleAnswerClick(option)}
+              disabled={selectedAnswer !== null}
+              whileHover={{ scale: selectedAnswer ? 1 : 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className={`p-4 rounded-xl font-bold text-lg transition-all text-left ${
+                selectedAnswer === option
+                  ? isCorrect
+                    ? 'bg-green-500 text-white shadow-lg'
+                    : 'bg-red-500 text-white shadow-lg'
+                  : selectedAnswer && option === exercise.answer
+                  ? 'bg-green-500 text-white shadow-lg'
+                  : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+              }`}
+            >
+              <span className="mr-2">{String.fromCharCode(65 + index)}.</span>
+              {option}
+              {selectedAnswer === option && isCorrect && ' ✓'}
+              {selectedAnswer === option && !isCorrect && ' ✗'}
+              {selectedAnswer && selectedAnswer !== option && option === exercise.answer && ' ✓'}
+            </motion.button>
+          ))}
+        </div>
+
+        {/* Explanation */}
+        {showExplanation && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className={`p-6 rounded-xl mb-4 ${
+              isCorrect ? 'bg-green-50 border-2 border-green-300' : 'bg-yellow-50 border-2 border-yellow-300'
+            }`}>
+              <p className="font-bold text-lg mb-2">
+                {isCorrect ? '✅ Betul!' : '📚 Mari Belajar:'}
+              </p>
+              <p className="text-gray-800">{exercise.explanation}</p>
+            </div>
+
+            <button
+              onClick={handleNext}
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-4 rounded-xl hover:shadow-lg transition-all"
+            >
+              {currentQuestion < logicExercises.length - 1 ? 'Soalan Seterusnya →' : 'Lihat Keputusan 🎉'}
+            </button>
+          </motion.div>
+        )}
+      </motion.div>
+    </motion.div>
+  )
+}
+
+// Code Patterns Activity Component
+function CodePatternsActivity() {
+  const [currentQuestion, setCurrentQuestion] = useState(0)
+  const [selectedAnswer, setSelectedAnswer] = useState(null)
+  const [isCorrect, setIsCorrect] = useState(null)
+  const [score, setScore] = useState(0)
+  const [completed, setCompleted] = useState(false)
+  const [showHint, setShowHint] = useState(false)
+
+  const pattern = codePatterns[currentQuestion]
+
+  const handleAnswerClick = (answer) => {
+    setSelectedAnswer(answer)
+    const correct = answer === pattern.answer
+    setIsCorrect(correct)
+
+    if (correct) {
+      setScore(score + 15)
+    }
+
+    setTimeout(() => {
+      if (currentQuestion < codePatterns.length - 1) {
+        setCurrentQuestion(currentQuestion + 1)
+        setSelectedAnswer(null)
+        setIsCorrect(null)
+        setShowHint(false)
+      } else {
+        setCompleted(true)
+      }
+    }, 2000)
+  }
+
+  const resetQuiz = () => {
+    setCurrentQuestion(0)
+    setSelectedAnswer(null)
+    setIsCorrect(null)
+    setScore(0)
+    setCompleted(false)
+    setShowHint(false)
+  }
+
+  if (completed) {
+    const totalPoints = codePatterns.length * 15
+    const percentage = Math.round((score / totalPoints) * 100)
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="text-center"
+      >
+        <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-12 rounded-2xl shadow-2xl max-w-2xl mx-auto">
+          <div className="text-6xl mb-4">
+            {percentage >= 80 ? '🏆' : percentage >= 60 ? '⭐' : '👍'}
+          </div>
+          <h2 className="text-4xl font-bold mb-4">
+            {percentage >= 80 ? 'Pakar Code!' : percentage >= 60 ? 'Hebat!' : 'Keep Learning!'}
+          </h2>
+          <p className="text-2xl mb-6">Pattern recognition selesai!</p>
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-6">
+            <p className="text-xl mb-2">Skor Akhir:</p>
+            <p className="text-5xl font-bold mb-2">{score} / {totalPoints}</p>
+            <p className="text-lg">({percentage}%)</p>
+          </div>
+          <button
+            onClick={resetQuiz}
+            className="bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg hover:shadow-lg transition-all"
+          >
+            🔄 Cuba Lagi
+          </button>
+        </div>
+      </motion.div>
+    )
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3 }}
+      className="max-w-4xl mx-auto"
+    >
+      <div className="mb-8 text-center">
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">🔍 Cari Pattern dalam Code</h2>
+        <p className="text-gray-600 mb-4">Baca code dan ramalkan output atau jawapan yang betul!</p>
+        <div className="flex gap-4 justify-center">
+          <div className="bg-blue-100 text-blue-800 px-6 py-2 rounded-full font-bold">
+            Soalan {currentQuestion + 1} / {codePatterns.length}
+          </div>
+          <div className="bg-purple-100 text-purple-800 px-6 py-2 rounded-full font-bold">
+            Skor: {score}
+          </div>
+        </div>
+      </div>
+
+      <motion.div
+        key={currentQuestion}
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="bg-white rounded-2xl shadow-xl p-8"
+      >
+        <h3 className="text-2xl font-bold text-blue-600 mb-6">{pattern.title}</h3>
+
+        {/* Code Display */}
+        <div className="bg-gray-900 text-green-400 rounded-xl p-6 mb-6 font-mono text-sm overflow-x-auto">
+          <pre className="whitespace-pre">{pattern.code}</pre>
+        </div>
+
+        {/* Question */}
+        <p className="text-xl font-bold text-gray-900 mb-6">
+          ❓ {pattern.question}
+        </p>
+
+        {/* Hint Button */}
+        {!selectedAnswer && (
+          <button
+            onClick={() => setShowHint(!showHint)}
+            className="mb-4 px-4 py-2 bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200 transition-colors font-medium"
+          >
+            💡 {showHint ? 'Sembunyikan Hint' : 'Tunjuk Hint'}
+          </button>
+        )}
+
+        {showHint && !selectedAnswer && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            className="mb-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded"
+          >
+            <p className="text-gray-700">{pattern.hint}</p>
+          </motion.div>
+        )}
+
+        {/* Options */}
+        <div className="grid gap-4">
+          {pattern.options.map((option, index) => (
+            <motion.button
+              key={index}
+              onClick={() => handleAnswerClick(option)}
+              disabled={selectedAnswer !== null}
+              whileHover={{ scale: selectedAnswer ? 1 : 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className={`p-4 rounded-xl font-bold text-lg transition-all ${
+                selectedAnswer === option
+                  ? isCorrect
+                    ? 'bg-green-500 text-white shadow-lg'
+                    : 'bg-red-500 text-white shadow-lg'
+                  : selectedAnswer && option === pattern.answer
+                  ? 'bg-green-500 text-white shadow-lg'
+                  : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+              }`}
+            >
+              {option}
+              {selectedAnswer === option && isCorrect && ' ✓'}
+              {selectedAnswer === option && !isCorrect && ' ✗'}
+              {selectedAnswer && selectedAnswer !== option && option === pattern.answer && ' ✓ (Jawapan Betul)'}
+            </motion.button>
+          ))}
+        </div>
+
+        {isCorrect !== null && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`mt-6 p-4 rounded-xl text-center font-bold ${
+              isCorrect ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+            }`}
+          >
+            {isCorrect ? '🎉 Betul! Anda faham pattern ini!' : '💡 Hint: ' + pattern.hint}
           </motion.div>
         )}
       </motion.div>
