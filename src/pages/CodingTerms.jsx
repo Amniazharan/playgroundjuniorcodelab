@@ -107,127 +107,307 @@ const fillInBlanks = [
   }
 ]
 
-// Logic Exercises - Brain Training!
+// Logic Exercises - Brain Training! (30 soalan yang cool!)
 const logicExercises = [
   {
     id: 1,
     type: 'if-else',
-    title: '🌦️ Cuaca Hari Ini',
-    scenario: 'Ali tengok cuaca pagi ini. Kalau HUJAN, dia akan bawa PAYUNG. Kalau TIDAK HUJAN, dia bawa TOPI.',
-    question: 'Hari ini HUJAN. Apa yang Ali bawa?',
-    options: ['Payung ☔', 'Topi 🎩', 'Tiada apa-apa'],
-    answer: 'Payung ☔',
-    explanation: 'IF hujan = TRUE, THEN bawa payung. Ini konsep IF-ELSE!'
+    title: '🚗 Main Kereta Mainan',
+    scenario: 'IF bateri penuh, kereta LAJU.\nELSE IF bateri separuh, kereta SLOW.\nELSE, kereta STOP.',
+    question: 'Bateri tinggal 20%. Macam mana kereta?',
+    options: ['Laju 💨', 'Slow 🐌', 'Stop ⛔'],
+    answer: 'Stop ⛔',
+    explanation: '20% tak sampai separuh (50%), jadi masuk ELSE - kereta STOP!'
   },
   {
     id: 2,
-    type: 'if-else',
-    title: '🌡️ Suhu Hari Ini',
-    scenario: 'IF suhu > 30°C, pakai baju PENDEK.\nELSE IF suhu > 20°C, pakai baju BIASA.\nELSE, pakai JAKET.',
-    question: 'Hari ini suhu 25°C. Apa yang kena pakai?',
-    options: ['Baju Pendek 👕', 'Baju Biasa 👔', 'Jaket 🧥'],
-    answer: 'Baju Biasa 👔',
-    explanation: '25°C tidak lebih dari 30°C, tetapi lebih dari 20°C. Jadi pilih baju BIASA!'
+    type: 'loop',
+    title: '🎮 Level Up Game',
+    scenario: 'level = 1\nREPEAT 5 times:\n  level = level + 1\nBerapa level sekarang?',
+    question: 'Level akhir:',
+    options: ['Level 5', 'Level 6', 'Level 7'],
+    answer: 'Level 6',
+    explanation: 'Start dari level 1, kemudian tambah 5 kali. Jadi 1+1+1+1+1+1 = 6!'
   },
   {
     id: 3,
-    type: 'loop',
-    title: '🔁 Ulang 5 Kali',
-    scenario: 'REPEAT 5 times: Tepuk tangan 👏\nBerapa kali Ali tepuk tangan?',
-    question: 'Pilih jawapan yang betul:',
-    options: ['1 kali', '5 kali', '10 kali'],
-    answer: '5 kali',
-    explanation: 'LOOP ulang 5 kali, jadi tepuk tangan 5 kali. Ini konsep LOOP!'
+    type: 'variable',
+    title: '🎯 Skor Dart',
+    scenario: 'skor = 10\nskor = skor + 20\nskor = skor - 5\nBerapa skor akhir?',
+    question: 'Skor total:',
+    options: ['15', '25', '30'],
+    answer: '25',
+    explanation: 'Start 10, tambah 20 (jadi 30), tolak 5 (jadi 25)!'
   },
   {
     id: 4,
-    type: 'loop',
-    title: '🍪 Kumpul Cookies',
-    scenario: 'Siti ada 0 cookies.\nREPEAT 3 times: Ambil 2 cookies\nBerapa cookies Siti ada sekarang?',
-    question: 'Jumlah cookies:',
-    options: ['2 cookies', '4 cookies', '6 cookies'],
-    answer: '6 cookies',
-    explanation: 'Ulang 3 kali, setiap kali ambil 2. Jadi 2+2+2 = 6 cookies!'
+    type: 'if-else',
+    title: '🍦 Kedai Ais Krim',
+    scenario: 'IF umur < 5, harga RM2.\nELSE IF umur < 12, harga RM3.\nELSE, harga RM5.',
+    question: 'Umur Aiman 8 tahun. Berapa harga?',
+    options: ['RM2', 'RM3', 'RM5'],
+    answer: 'RM3',
+    explanation: '8 tahun lebih dari 5, tetapi kurang dari 12. Jadi RM3!'
   },
   {
     id: 5,
-    type: 'variable',
-    title: '📦 Kotak Ajaib',
-    scenario: 'box = 10\nbox = box + 5\nBerapa nilai box sekarang?',
-    question: 'Nilai dalam box:',
-    options: ['5', '10', '15'],
-    answer: '15',
-    explanation: 'box mula-mula 10, kemudian tambah 5. Jadi 10 + 5 = 15!'
+    type: 'loop',
+    title: '🎈 Tiup Belon',
+    scenario: 'belon = 0\nREPEAT 7 times:\n  belon = belon + 1\nBerapa belon siap?',
+    question: 'Jumlah belon:',
+    options: ['6 belon', '7 belon', '8 belon'],
+    answer: '7 belon',
+    explanation: 'Ulang 7 kali, setiap kali tambah 1 belon. Jadi 7 belon!'
   },
   {
     id: 6,
-    type: 'variable',
-    title: '🎒 Beg Sekolah',
-    scenario: 'buku = 3\npensil = 5\njumla = buku + pensil\nBerapa nilai jumla?',
-    question: 'Nilai jumla:',
-    options: ['3', '5', '8'],
-    answer: '8',
-    explanation: 'Variable buku = 3, pensil = 5. Jadi jumla = 3 + 5 = 8!'
+    type: 'array',
+    title: '🎒 Toys Collection',
+    scenario: 'toys = ["robot", "kereta", "doll", "lego"]\nApa di index 2?',
+    question: 'Toy di kedudukan index 2:',
+    options: ['robot', 'kereta', 'doll'],
+    answer: 'doll',
+    explanation: 'Index 0=robot, 1=kereta, 2=doll. Index start dari 0!'
   },
   {
     id: 7,
-    type: 'array',
-    title: '🗃️ Bakul Buah',
-    scenario: 'buah = ["epal", "oren", "pisang"]\nBerapa BANYAK buah dalam array?',
-    question: 'Jumlah item:',
-    options: ['2 item', '3 item', '4 item'],
-    answer: '3 item',
-    explanation: 'Array ada 3 item: epal, oren, pisang. Ini konsep ARRAY LENGTH!'
+    type: 'variable',
+    title: '💰 Duit Raya',
+    scenario: 'duit = 50\nduit = duit + 30\nduit = duit + 20\nBerapa duit total?',
+    question: 'Jumlah duit:',
+    options: ['RM80', 'RM90', 'RM100'],
+    answer: 'RM100',
+    explanation: 'Start RM50 + RM30 + RM20 = RM100!'
   },
   {
     id: 8,
-    type: 'array',
-    title: '📍 Index dalam Array',
-    scenario: 'nama = ["Ali", "Siti", "Ahmad"]\nApa yang ada di index 0?',
-    question: 'Item di index 0:',
-    options: ['Ali', 'Siti', 'Ahmad'],
-    answer: 'Ali',
-    explanation: 'Index bermula dari 0! Jadi index 0 = Ali, index 1 = Siti, index 2 = Ahmad.'
+    type: 'if-else',
+    title: '🎢 Roller Coaster',
+    scenario: 'IF tinggi >= 120cm, BOLEH naik.\nELSE, TAK BOLEH naik.',
+    question: 'Tinggi Sarah 115cm. Boleh naik?',
+    options: ['Boleh! 🎉', 'Tak Boleh 😢'],
+    answer: 'Tak Boleh 😢',
+    explanation: '115cm kurang dari 120cm, jadi TAK BOLEH naik. Safety first!'
   },
   {
     id: 9,
-    type: 'if-else',
-    title: '💯 Markah Peperiksaan',
-    scenario: 'IF markah >= 80, dapat A.\nELSE IF markah >= 60, dapat B.\nELSE, dapat C.',
-    question: 'Ahmad dapat markah 75. Gred apa dia dapat?',
-    options: ['Gred A', 'Gred B', 'Gred C'],
-    answer: 'Gred B',
-    explanation: '75 tidak sampai 80 (bukan A), tetapi lebih dari 60. Jadi dapat B!'
+    type: 'loop',
+    title: '⚽ Tendang Bola',
+    scenario: 'goal = 0\nREPEAT 3 times:\n  goal = goal + 2\nBerapa goal?',
+    question: 'Jumlah goal:',
+    options: ['3 goal', '5 goal', '6 goal'],
+    answer: '6 goal',
+    explanation: 'Ulang 3 kali, setiap kali 2 goal. Jadi 2+2+2 = 6 goal!'
   },
   {
     id: 10,
-    type: 'loop',
-    title: '🌟 Lukis Bintang',
-    scenario: 'stars = 0\nREPEAT 4 times:\n  stars = stars + 1\nBerapa nilai stars?',
-    question: 'Nilai akhir stars:',
-    options: ['1', '4', '5'],
-    answer: '4',
-    explanation: 'Bermula 0, kemudian tambah 1 sebanyak 4 kali. Jadi 0+1+1+1+1 = 4!'
+    type: 'boolean',
+    title: '🎪 Masuk Carnival',
+    scenario: 'ticket = true\nduit = false\nIF ticket AND duit, boleh masuk.',
+    question: 'Boleh masuk carnival?',
+    options: ['Boleh masuk! 🎉', 'Tak boleh 😢'],
+    answer: 'Tak boleh 😢',
+    explanation: 'Ticket=TRUE tapi duit=FALSE. Untuk AND, KEDUA-DUA kena TRUE!'
   },
   {
     id: 11,
-    type: 'boolean',
-    title: '✅ TRUE atau FALSE',
-    scenario: 'hujan = true\nayah = false\nIF hujan AND panas, pergi pantai.',
-    question: 'Adakah mereka pergi pantai?',
-    options: ['Ya, pergi', 'Tidak pergi'],
-    answer: 'Tidak pergi',
-    explanation: 'Hujan = TRUE tetapi panas = FALSE. Untuk AND, KEDUA-DUA mesti TRUE!'
+    type: 'array',
+    title: '🍕 Pizza Toppings',
+    scenario: 'topping = ["cheese", "pepperoni", "mushroom"]\nBerapa banyak topping?',
+    question: 'Jumlah topping:',
+    options: ['2 jenis', '3 jenis', '4 jenis'],
+    answer: '3 jenis',
+    explanation: 'Array length = 3. Ada 3 topping dalam array!'
   },
   {
     id: 12,
+    type: 'variable',
+    title: '🎮 HP dalam Game',
+    scenario: 'hp = 100\nhp = hp - 30\nhp = hp + 15\nBerapa HP sekarang?',
+    question: 'HP akhir:',
+    options: ['75', '85', '95'],
+    answer: '85',
+    explanation: 'Start 100, tolak 30 (70), tambah 15 (85)!'
+  },
+  {
+    id: 13,
+    type: 'if-else',
+    title: '🌙 Waktu Tidur',
+    scenario: 'IF masa >= 22:00, TIDUR.\nELSE IF masa >= 21:00, SIAP TIDUR.\nELSE, MAIN lagi.',
+    question: 'Sekarang pukul 21:30. Buat apa?',
+    options: ['Tidur 😴', 'Siap Tidur 🛁', 'Main lagi 🎮'],
+    answer: 'Siap Tidur 🛁',
+    explanation: '21:30 lebih dari 21:00, jadi SIAP TIDUR (gosok gigi, pakai baju tidur)!'
+  },
+  {
+    id: 14,
+    type: 'loop',
+    title: '🏀 Shoot Basketball',
+    scenario: 'shoot = 0\nREPEAT 10 times:\n  shoot = shoot + 1\nBerapa kali shoot?',
+    question: 'Jumlah tembakan:',
+    options: ['9 kali', '10 kali', '11 kali'],
+    answer: '10 kali',
+    explanation: 'Loop 10 kali, jadi shoot basketball 10 kali!'
+  },
+  {
+    id: 15,
+    type: 'boolean',
+    title: '🚦 Traffic Light',
+    scenario: 'hijau = false\nmerah = true\nIF hijau, JALAN.\nELSE IF merah, STOP.',
+    question: 'Apa yang perlu buat?',
+    options: ['Jalan 🚗', 'Stop 🛑', 'Slow 🐌'],
+    answer: 'Stop 🛑',
+    explanation: 'Merah=TRUE, jadi STOP. Safety on the road!'
+  },
+  {
+    id: 16,
+    type: 'array',
+    title: '🎨 Warna Crayon',
+    scenario: 'crayon = ["red", "blue", "green", "yellow", "purple"]\nApa warna di index 3?',
+    question: 'Warna di index 3:',
+    options: ['green', 'yellow', 'purple'],
+    answer: 'yellow',
+    explanation: 'Index 0=red, 1=blue, 2=green, 3=yellow!'
+  },
+  {
+    id: 17,
+    type: 'variable',
+    title: '🎂 Potong Kek',
+    scenario: 'kek = 12 slice\nmakan = 3 slice\nmakan = makan + 2 slice\nBaki berapa?',
+    question: 'Kek yang tinggal:',
+    options: ['5 slice', '7 slice', '9 slice'],
+    answer: '7 slice',
+    explanation: 'Start 12, makan 3 (tinggal 9), makan lagi 2 (tinggal 7)!'
+  },
+  {
+    id: 18,
+    type: 'if-else',
+    title: '🎁 Buka Gift Box',
+    scenario: 'IF kunci = "ABC123", box TERBUKA.\nELSE, box TERKUNCI.',
+    question: 'Password: "XYZ789". Box macam mana?',
+    options: ['Terbuka 🎉', 'Terkunci 🔒'],
+    answer: 'Terkunci 🔒',
+    explanation: '"XYZ789" tak sama dengan "ABC123", jadi box TERKUNCI!'
+  },
+  {
+    id: 19,
+    type: 'loop',
+    title: '🎪 Lompat Trampoline',
+    scenario: 'lompat = 5\nREPEAT 4 times:\n  lompat = lompat + 3\nBerapa kali lompat?',
+    question: 'Total lompatan:',
+    options: ['12 kali', '15 kali', '17 kali'],
+    answer: '17 kali',
+    explanation: 'Start 5, ulang 4 kali tambah 3. Jadi 5+3+3+3+3 = 17!'
+  },
+  {
+    id: 20,
     type: 'complex',
-    title: '🧠 Cabaran Otak!',
-    scenario: 'x = 5\nIF x > 3:\n  x = x * 2\nELSE:\n  x = x + 10\nBerapa nilai x?',
-    question: 'Nilai akhir x:',
-    options: ['10', '15', '25'],
-    answer: '10',
-    explanation: '5 lebih besar dari 3 (TRUE), jadi x = 5 * 2 = 10. Tidak masuk ELSE!'
+    title: '🎯 Point System',
+    scenario: 'point = 0\nIF action = "win":\n  point = point + 10\nELSE:\n  point = point + 2\naction = "win"',
+    question: 'Berapa point dapat?',
+    options: ['2 point', '10 point', '12 point'],
+    answer: '10 point',
+    explanation: 'action="win", jadi masuk IF dan dapat 10 point!'
+  },
+  {
+    id: 21,
+    type: 'array',
+    title: '🐶 Pet Shop',
+    scenario: 'pets = ["kucing", "anjing", "hamster", "arnab", "burung"]\nBerapa banyak pets?',
+    question: 'Jumlah jenis pet:',
+    options: ['4 jenis', '5 jenis', '6 jenis'],
+    answer: '5 jenis',
+    explanation: 'Array ada 5 item, jadi 5 jenis pet!'
+  },
+  {
+    id: 22,
+    type: 'boolean',
+    title: '🎮 Game Over',
+    scenario: 'hp = 0\nenemy = true\nIF hp > 0 AND enemy, FIGHT.\nELSE, GAME OVER.',
+    question: 'Apa yang jadi?',
+    options: ['Fight! ⚔️', 'Game Over 💀'],
+    answer: 'Game Over 💀',
+    explanation: 'HP=0 (tak lebih dari 0), jadi GAME OVER walaupun ada enemy!'
+  },
+  {
+    id: 23,
+    type: 'variable',
+    title: '🎪 Menang Hadiah',
+    scenario: 'hadiah = 2\nhadiah = hadiah * 3\nhadiah = hadiah + 4\nBerapa hadiah?',
+    question: 'Total hadiah:',
+    options: ['8 hadiah', '10 hadiah', '12 hadiah'],
+    answer: '10 hadiah',
+    explanation: 'Start 2, kali 3 (jadi 6), tambah 4 (jadi 10)!'
+  },
+  {
+    id: 24,
+    type: 'if-else',
+    title: '🎬 Tengok Movie',
+    scenario: 'IF umur >= 13, boleh tengok PG13.\nELSE, tengok U sahaja.',
+    question: 'Umur 10 tahun. Boleh tengok apa?',
+    options: ['PG13 🎬', 'U sahaja 🎞️'],
+    answer: 'U sahaja 🎞️',
+    explanation: '10 tahun kurang dari 13, jadi boleh U sahaja!'
+  },
+  {
+    id: 25,
+    type: 'loop',
+    title: '🎨 Lukis Gambar',
+    scenario: 'gambar = 1\nREPEAT 6 times:\n  gambar = gambar + 1\nBerapa gambar siap?',
+    question: 'Jumlah gambar:',
+    options: ['6 gambar', '7 gambar', '8 gambar'],
+    answer: '7 gambar',
+    explanation: 'Start 1 gambar, ulang 6 kali tambah 1. Jadi 1+6 = 7 gambar!'
+  },
+  {
+    id: 26,
+    type: 'array',
+    title: '🍔 Menu Makanan',
+    scenario: 'menu = ["burger", "pizza", "nasi", "mee"]\nApa item pertama?',
+    question: 'Item di index 0:',
+    options: ['burger', 'pizza', 'nasi'],
+    answer: 'burger',
+    explanation: 'Index 0 adalah item PERTAMA. Jadi burger!'
+  },
+  {
+    id: 27,
+    type: 'complex',
+    title: '💎 Collect Gems',
+    scenario: 'gem = 5\nIF gem < 10:\n  gem = gem * 2\nELSE:\n  gem = gem + 5',
+    question: 'Berapa gem akhir?',
+    options: ['10 gem', '12 gem', '15 gem'],
+    answer: '10 gem',
+    explanation: '5 kurang dari 10, jadi kali 2. Jadi 5 * 2 = 10 gem!'
+  },
+  {
+    id: 28,
+    type: 'boolean',
+    title: '☀️ Pergi Pantai',
+    scenario: 'cerah = true\ncuti = true\nIF cerah OR hujan, pergi pantai.',
+    question: 'Pergi pantai tak?',
+    options: ['Pergi! 🏖️', 'Tak pergi'],
+    answer: 'Pergi! 🏖️',
+    explanation: 'Cerah=TRUE. Untuk OR, SALAH SATU TRUE pun dah cukup!'
+  },
+  {
+    id: 29,
+    type: 'loop',
+    title: '🍭 Kira Gula-gula',
+    scenario: 'gula = 3\nREPEAT 5 times:\n  gula = gula + 2\nJumlah gula-gula?',
+    question: 'Total gula-gula:',
+    options: ['11', '13', '15'],
+    answer: '13',
+    explanation: 'Start 3, ulang 5 kali tambah 2. Jadi 3+2+2+2+2+2 = 13!'
+  },
+  {
+    id: 30,
+    type: 'complex',
+    title: '🏆 Final Boss Fight',
+    scenario: 'damage = 10\nIF power = "strong":\n  damage = damage * 3\nELSE IF power = "normal":\n  damage = damage * 2\npower = "strong"',
+    question: 'Berapa damage?',
+    options: ['10', '20', '30'],
+    answer: '30',
+    explanation: 'Power="strong", jadi damage = 10 * 3 = 30! Critical hit! 💥'
   }
 ]
 
@@ -305,7 +485,7 @@ print(total)`,
 ]
 
 export default function CodingTerms() {
-  const [activeTab, setActiveTab] = useState('flip-cards')
+  const [activeTab, setActiveTab] = useState('logic-exercise')
   const navigate = useNavigate()
   const { user, profile, logout } = useAuth()
 
@@ -356,14 +536,14 @@ export default function CodingTerms() {
               Aktiviti yang fun dan mudah diingat untuk kanak-kanak!
             </p>
             <div className="flex gap-4 justify-center items-center flex-wrap text-sm md:text-base">
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
-                🎴 {codingTerms.length} Flip Cards
-              </div>
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2 font-bold">
                 🧠 {logicExercises.length} Latihan Logik
               </div>
               <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
                 🔍 {codePatterns.length} Pattern Quiz
+              </div>
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
+                🎴 {codingTerms.length} Flip Cards
               </div>
             </div>
           </motion.div>
@@ -374,6 +554,26 @@ export default function CodingTerms() {
       <section className="bg-white border-b sticky top-16 z-40">
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex gap-2 overflow-x-auto pb-2">
+            <button
+              onClick={() => setActiveTab('logic-exercise')}
+              className={`px-6 py-3 rounded-lg font-medium whitespace-nowrap transition-all ${
+                activeTab === 'logic-exercise'
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              🧠 Latihan Logik
+            </button>
+            <button
+              onClick={() => setActiveTab('code-patterns')}
+              className={`px-6 py-3 rounded-lg font-medium whitespace-nowrap transition-all ${
+                activeTab === 'code-patterns'
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              🔍 Cari Pattern
+            </button>
             <button
               onClick={() => setActiveTab('flip-cards')}
               className={`px-6 py-3 rounded-lg font-medium whitespace-nowrap transition-all ${
@@ -403,26 +603,6 @@ export default function CodingTerms() {
               }`}
             >
               ✏️ Isi Tempat Kosong
-            </button>
-            <button
-              onClick={() => setActiveTab('logic-exercise')}
-              className={`px-6 py-3 rounded-lg font-medium whitespace-nowrap transition-all ${
-                activeTab === 'logic-exercise'
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              🧠 Latihan Logik
-            </button>
-            <button
-              onClick={() => setActiveTab('code-patterns')}
-              className={`px-6 py-3 rounded-lg font-medium whitespace-nowrap transition-all ${
-                activeTab === 'code-patterns'
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              🔍 Cari Pattern
             </button>
           </div>
         </div>
