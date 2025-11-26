@@ -14,51 +14,51 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const initAuth = async () => {
       try {
-        console.log('🔍 [AuthContext] Starting auth initialization...')
+        console.log('🔍 [AuthContext] Memulakan inisialisasi pengesahan...')
 
-        // Check URL parameter first
+        // Semak parameter URL terlebih dahulu
         const urlParams = new URLSearchParams(window.location.search)
         const authParam = urlParams.get('auth')
 
         if (authParam) {
-          console.log('🔐 [AuthContext] Found auth param in URL')
+          console.log('🔐 [AuthContext] Parameter auth dijumpai dalam URL')
 
           try {
             const authData = JSON.parse(atob(authParam))
-            console.log('📦 [AuthContext] Decoded auth data:', {
+            console.log('📦 [AuthContext] Data auth dinyahkod:', {
               email: authData.user_email,
               hasToken: !!authData.access_token
             })
 
-            // Set session
-            console.log('🔄 [AuthContext] Setting session...')
+            // Tetapkan session
+            console.log('🔄 [AuthContext] Menetapkan session...')
             const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
               access_token: authData.access_token,
               refresh_token: authData.refresh_token
             })
 
-            console.log('📦 [AuthContext] Session result:', {
+            console.log('📦 [AuthContext] Hasil session:', {
               hasUser: !!sessionData?.user,
               hasError: !!sessionError
             })
 
             if (sessionError) {
-              console.error('❌ [AuthContext] Session error:', sessionError)
-              setError('Failed to verify session')
+              console.error('❌ [AuthContext] Ralat session:', sessionError)
+              setError('Gagal mengesahkan session')
               setLoading(false)
               return
             }
 
             const verifiedUser = sessionData?.user
-            console.log('👤 [AuthContext] Verified user:', verifiedUser?.email)
+            console.log('👤 [AuthContext] Pengguna disahkan:', verifiedUser?.email)
 
             if (verifiedUser) {
-              console.log('✅ [AuthContext] User verified:', verifiedUser.email)
+              console.log('✅ [AuthContext] Pengguna berjaya disahkan:', verifiedUser.email)
               setUser(verifiedUser)
 
-              // Fetch profile
-              console.log('📡 [AuthContext] Fetching profile from database...')
-              console.log('🔑 [AuthContext] User ID:', verifiedUser.id)
+              // Ambil profile
+              console.log('📡 [AuthContext] Mengambil profile dari database...')
+              console.log('🔑 [AuthContext] ID Pengguna:', verifiedUser.id)
 
               try {
                 const { data: profileData, error: profileError } = await supabase
@@ -67,51 +67,51 @@ export const AuthProvider = ({ children }) => {
                   .eq('id', verifiedUser.id)
                   .single()
 
-                console.log('📦 [AuthContext] Profile fetch result:', {
+                console.log('📦 [AuthContext] Hasil pengambilan profile:', {
                   hasData: !!profileData,
                   hasError: !!profileError
                 })
 
                 if (profileError) {
-                  console.error('❌ [AuthContext] Profile error:', profileError)
-                  console.error('📋 [AuthContext] Error details:', {
+                  console.error('❌ [AuthContext] Ralat profile:', profileError)
+                  console.error('📋 [AuthContext] Butiran ralat:', {
                     message: profileError.message,
                     code: profileError.code,
                     hint: profileError.hint
                   })
-                  setError(`Profile error: ${profileError.message}`)
+                  setError(`Ralat profile: ${profileError.message}`)
                 } else {
-                  console.log('✅ [AuthContext] Profile loaded successfully!')
-                  console.log('📊 [AuthContext] Profile data:', {
+                  console.log('✅ [AuthContext] Profile berjaya dimuatkan!')
+                  console.log('📊 [AuthContext] Data profile:', {
                     email: profileData.email,
                     subscription_status: profileData.subscription_status
                   })
                   setProfile(profileData)
                 }
               } catch (fetchError) {
-                console.error('❌ [AuthContext] Profile fetch exception:', fetchError)
-                setError(`Profile fetch failed: ${fetchError.message}`)
+                console.error('❌ [AuthContext] Pengecualian pengambilan profile:', fetchError)
+                setError(`Pengambilan profile gagal: ${fetchError.message}`)
               }
 
-              // Clean URL
-              console.log('🧹 [AuthContext] Cleaning URL...')
+              // Bersihkan URL
+              console.log('🧹 [AuthContext] Membersihkan URL...')
               window.history.replaceState({}, document.title, window.location.pathname)
-              console.log('✨ [AuthContext] URL cleaned')
+              console.log('✨ [AuthContext] URL telah dibersihkan')
             }
           } catch (decodeError) {
-            console.error('❌ [AuthContext] Decode error:', decodeError)
-            setError('Invalid auth data')
+            console.error('❌ [AuthContext] Ralat penyahkodan:', decodeError)
+            setError('Data auth tidak sah')
           }
         } else {
-          // Check existing session
-          console.log('🔍 [AuthContext] Checking existing session...')
+          // Semak session sedia ada
+          console.log('🔍 [AuthContext] Memeriksa session sedia ada...')
           const { data: { session } } = await supabase.auth.getSession()
 
           if (session?.user) {
-            console.log('✅ [AuthContext] Found session:', session.user.email)
+            console.log('✅ [AuthContext] Session dijumpai:', session.user.email)
             setUser(session.user)
 
-            // Fetch profile
+            // Ambil profile
             const { data: profileData, error: profileError } = await supabase
               .from('profiles')
               .select('*')
@@ -119,47 +119,47 @@ export const AuthProvider = ({ children }) => {
               .single()
 
             if (profileError) {
-              console.error('❌ [AuthContext] Profile error:', profileError)
-              setError(`Profile error: ${profileError.message}`)
+              console.error('❌ [AuthContext] Ralat profile:', profileError)
+              setError(`Ralat profile: ${profileError.message}`)
             } else {
-              console.log('✅ [AuthContext] Profile loaded')
+              console.log('✅ [AuthContext] Profile dimuatkan')
               setProfile(profileData)
             }
           } else {
-            console.log('ℹ️ [AuthContext] No session found')
-            setError('No authentication found')
+            console.log('ℹ️ [AuthContext] Tiada session dijumpai')
+            setError('Tiada pengesahan dijumpai')
           }
         }
       } catch (error) {
-        console.error('❌ [AuthContext] Init error:', error)
+        console.error('❌ [AuthContext] Ralat inisialisasi:', error)
         setError(error.message)
       } finally {
-        console.log('🏁 [AuthContext] Setting loading = false')
+        console.log('🏁 [AuthContext] Menetapkan loading = false')
         setLoading(false)
-        console.log('✅ [AuthContext] Auth initialization complete!')
+        console.log('✅ [AuthContext] Inisialisasi pengesahan selesai!')
       }
     }
 
     initAuth()
 
-    // Listen for auth changes (but ignore during initial load)
+    // Dengar perubahan auth (tetapi abaikan semasa muatan awal)
     let isInitialLoad = true
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('🔄 [AuthContext] Auth event:', event, '(initial:', isInitialLoad, ')')
+      console.log('🔄 [AuthContext] Event auth:', event, '(awal:', isInitialLoad, ')')
 
-      // Skip handling during initial auth setup
+      // Langkau pengendalian semasa setup auth awal
       if (isInitialLoad && event === 'SIGNED_IN') {
-        console.log('⏭️ [AuthContext] Skipping SIGNED_IN during initial load')
+        console.log('⏭️ [AuthContext] Melangkau SIGNED_IN semasa muatan awal')
         isInitialLoad = false
         return
       }
 
       if (event === 'SIGNED_OUT') {
-        console.log('🚪 [AuthContext] User signed out')
+        console.log('🚪 [AuthContext] Pengguna telah log keluar')
         setUser(null)
         setProfile(null)
       } else if (event === 'TOKEN_REFRESHED' && session?.user) {
-        console.log('🔄 [AuthContext] Token refreshed')
+        console.log('🔄 [AuthContext] Token telah diperbaharui')
         setUser(session.user)
 
         const { data: profileData } = await supabase
@@ -179,15 +179,15 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      console.log('🚪 [AuthContext] Logging out...')
+      console.log('🚪 [AuthContext] Sedang log keluar...')
       await supabase.auth.signOut()
       setUser(null)
       setProfile(null)
       setError(null)
-      console.log('✅ [AuthContext] Logged out')
+      console.log('✅ [AuthContext] Berjaya log keluar')
       window.location.href = 'https://juniorcodelab.com/Login'
     } catch (error) {
-      console.error('❌ [AuthContext] Logout error:', error)
+      console.error('❌ [AuthContext] Ralat log keluar:', error)
     }
   }
 

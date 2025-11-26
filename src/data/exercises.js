@@ -7,7 +7,8 @@ export const categories = [
   { id: 'algorithms', name: 'Algorithms', emoji: '🤖', color: '#FFD700' },
   { id: 'logic', name: 'Logic', emoji: '🧠', color: '#98FB98' },
   { id: 'loops', name: 'Loops', emoji: '🔁', color: '#DDA0DD' },
-  { id: 'data', name: 'Data', emoji: '📊', color: '#FF6347' }
+  { id: 'data', name: 'Data', emoji: '📊', color: '#FF6347' },
+  { id: 'coding-terms', name: 'Belajar Term Coding', emoji: '📚', color: '#9370DB' }
 ]
 
 export const exercises = [

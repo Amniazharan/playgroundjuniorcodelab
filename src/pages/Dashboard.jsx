@@ -59,11 +59,17 @@ export default function Dashboard() {
             <p className="text-xl md:text-2xl mb-6">
               Jom main dengan block coding yang best!
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center flex-wrap">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg px-6 py-3">
                 <span className="text-3xl font-bold">{exercises.length}</span>
                 <span className="ml-2">Aktiviti Menarik</span>
               </div>
+              <button
+                onClick={() => navigate('/coding-terms')}
+                className="bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold px-8 py-3 rounded-lg hover:shadow-lg transform hover:-translate-y-1 transition-all"
+              >
+                📚 Belajar Term Coding
+              </button>
               <button
                 onClick={() => navigate(`/exercise/${exercises[0].id}`)}
                 className="bg-white text-orange-500 font-bold px-8 py-3 rounded-lg hover:shadow-lg transform hover:-translate-y-1 transition-all"

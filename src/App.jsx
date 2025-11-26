@@ -3,6 +3,7 @@ import { AuthProvider } from './contexts/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import Dashboard from './pages/Dashboard'
 import ExerciseWorkspace from './pages/ExerciseWorkspace'
+import CodingTerms from './pages/CodingTerms'
 
 function App() {
   return (
@@ -30,6 +31,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ExerciseWorkspace />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/coding-terms"
+            element={
+              <ProtectedRoute>
+                <CodingTerms />
               </ProtectedRoute>
             }
           />
