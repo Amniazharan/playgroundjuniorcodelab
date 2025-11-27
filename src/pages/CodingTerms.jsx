@@ -493,57 +493,59 @@ export default function CodingTerms() {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate('/')}
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              ← Kembali
-            </button>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              📚 Belajar Term Coding
-            </h1>
-          </div>
-          <div className="flex items-center gap-4">
-            {user && (
-              <span className="text-sm text-gray-600">
-                Hi, <span className="font-semibold">{profile?.full_name || user.email?.split('@')[0] || 'Student'}</span>!
-              </span>
-            )}
-            <button
-              onClick={logout}
-              className="text-sm bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg transition-all"
-            >
-              Logout
-            </button>
+        <div className="max-w-6xl mx-auto px-4 py-3 md:py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 md:gap-4">
+              <button
+                onClick={() => navigate('/')}
+                className="text-gray-600 hover:text-gray-900 transition-colors text-sm md:text-base"
+              >
+                ← Kembali
+              </button>
+              <h1 className="text-base md:text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                📚 Belajar
+              </h1>
+            </div>
+            <div className="flex items-center gap-2 md:gap-4">
+              {user && (
+                <span className="hidden sm:block text-xs md:text-sm text-gray-600">
+                  Hi, <span className="font-semibold">{profile?.full_name || user.email?.split('@')[0] || 'Student'}</span>!
+                </span>
+              )}
+              <button
+                onClick={logout}
+                className="text-xs md:text-sm bg-gray-200 hover:bg-gray-300 px-2 md:px-4 py-1.5 md:py-2 rounded-lg transition-all"
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-12 px-4">
+      <section className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-6 md:py-12 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">
               Jom Belajar Istilah Coding! 🎉
             </h1>
-            <p className="text-xl md:text-2xl mb-6">
+            <p className="text-base md:text-xl lg:text-2xl mb-4 md:mb-6">
               Aktiviti yang fun dan mudah diingat untuk kanak-kanak!
             </p>
-            <div className="flex gap-4 justify-center items-center flex-wrap text-sm md:text-base">
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2 font-bold">
-                🧠 {logicExercises.length} Latihan Logik
+            <div className="flex gap-2 md:gap-4 justify-center items-center flex-wrap text-xs md:text-sm lg:text-base">
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 md:px-4 py-1.5 md:py-2 font-bold">
+                🧠 {logicExercises.length} Latihan
               </div>
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
-                🔍 {codePatterns.length} Pattern Quiz
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 md:px-4 py-1.5 md:py-2">
+                🔍 {codePatterns.length} Pattern
               </div>
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
-                🎴 {codingTerms.length} Flip Cards
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 md:px-4 py-1.5 md:py-2">
+                🎴 {codingTerms.length} Cards
               </div>
             </div>
           </motion.div>
@@ -551,65 +553,65 @@ export default function CodingTerms() {
       </section>
 
       {/* Tab Navigation */}
-      <section className="bg-white border-b sticky top-16 z-40">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex gap-2 overflow-x-auto pb-2">
+      <section className="bg-white border-b sticky top-[52px] md:top-16 z-40">
+        <div className="max-w-6xl mx-auto px-2 md:px-4 py-2 md:py-4">
+          <div className="flex gap-1.5 md:gap-2 overflow-x-auto pb-2 scrollbar-hide">
             <button
               onClick={() => setActiveTab('logic-exercise')}
-              className={`px-6 py-3 rounded-lg font-medium whitespace-nowrap transition-all ${
+              className={`px-3 md:px-6 py-2 md:py-3 rounded-lg font-medium whitespace-nowrap transition-all text-xs md:text-base ${
                 activeTab === 'logic-exercise'
                   ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              🧠 Latihan Logik
+              🧠 Latihan
             </button>
             <button
               onClick={() => setActiveTab('code-patterns')}
-              className={`px-6 py-3 rounded-lg font-medium whitespace-nowrap transition-all ${
+              className={`px-3 md:px-6 py-2 md:py-3 rounded-lg font-medium whitespace-nowrap transition-all text-xs md:text-base ${
                 activeTab === 'code-patterns'
                   ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              🔍 Cari Pattern
+              🔍 Pattern
             </button>
             <button
               onClick={() => setActiveTab('flip-cards')}
-              className={`px-6 py-3 rounded-lg font-medium whitespace-nowrap transition-all ${
+              className={`px-3 md:px-6 py-2 md:py-3 rounded-lg font-medium whitespace-nowrap transition-all text-xs md:text-base ${
                 activeTab === 'flip-cards'
                   ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              🎴 Flip Cards
+              🎴 Cards
             </button>
             <button
               onClick={() => setActiveTab('matching')}
-              className={`px-6 py-3 rounded-lg font-medium whitespace-nowrap transition-all ${
+              className={`px-3 md:px-6 py-2 md:py-3 rounded-lg font-medium whitespace-nowrap transition-all text-xs md:text-base ${
                 activeTab === 'matching'
                   ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              🔗 Suaikan Term
+              🔗 Suaikan
             </button>
             <button
               onClick={() => setActiveTab('fill-blanks')}
-              className={`px-6 py-3 rounded-lg font-medium whitespace-nowrap transition-all ${
+              className={`px-3 md:px-6 py-2 md:py-3 rounded-lg font-medium whitespace-nowrap transition-all text-xs md:text-base ${
                 activeTab === 'fill-blanks'
                   ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              ✏️ Isi Tempat Kosong
+              ✏️ Isi Kosong
             </button>
           </div>
         </div>
       </section>
 
       {/* Content */}
-      <section className="max-w-6xl mx-auto px-4 py-8">
+      <section className="max-w-6xl mx-auto px-3 md:px-4 py-4 md:py-8">
         <AnimatePresence mode="wait">
           {activeTab === 'flip-cards' && <FlipCardsActivity key="flip-cards" />}
           {activeTab === 'matching' && <MatchingActivity key="matching" />}
@@ -640,12 +642,12 @@ function FlipCardsActivity() {
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="mb-6 text-center">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">🎴 Flip Cards - Terbalikkan Kad!</h2>
-        <p className="text-gray-600">Klik pada kad untuk lihat maksud dan contoh!</p>
+      <div className="mb-4 md:mb-6 text-center">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">🎴 Flip Cards</h2>
+        <p className="text-sm md:text-base text-gray-600">Klik pada kad untuk lihat maksud dan contoh!</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
         {codingTerms.map(term => (
           <motion.div
             key={term.id}
@@ -756,16 +758,16 @@ function MatchingActivity() {
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="mb-6 text-center">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">🔗 Suaikan Term dengan Maksud!</h2>
-        <p className="text-gray-600 mb-4">Klik satu term, kemudian klik maksud yang betul!</p>
-        <div className="flex gap-4 justify-center items-center">
-          <div className="bg-purple-100 text-purple-800 px-6 py-2 rounded-full font-bold">
+      <div className="mb-4 md:mb-6 text-center">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">🔗 Suaikan Term dengan Maksud!</h2>
+        <p className="text-sm md:text-base text-gray-600 mb-3 md:mb-4">Klik satu term, kemudian klik maksud yang betul!</p>
+        <div className="flex gap-2 md:gap-4 justify-center items-center flex-wrap">
+          <div className="bg-purple-100 text-purple-800 px-4 md:px-6 py-1.5 md:py-2 rounded-full font-bold text-sm md:text-base">
             Skor: {score}
           </div>
           <button
             onClick={resetGame}
-            className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-full font-bold transition-colors"
+            className="bg-pink-500 hover:bg-pink-600 text-white px-4 md:px-6 py-1.5 md:py-2 rounded-full font-bold text-sm md:text-base transition-colors"
           >
             🔄 Main Lagi
           </button>
@@ -776,18 +778,18 @@ function MatchingActivity() {
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          className="mb-6 bg-gradient-to-r from-green-400 to-blue-500 text-white p-6 rounded-xl text-center"
+          className="mb-4 md:mb-6 bg-gradient-to-r from-green-400 to-blue-500 text-white p-4 md:p-6 rounded-xl text-center"
         >
-          <h3 className="text-3xl font-bold mb-2">🎉 Tahniah!</h3>
-          <p className="text-xl">Anda berjaya suaikan semua! Skor: {score}</p>
+          <h3 className="text-2xl md:text-3xl font-bold mb-2">🎉 Tahniah!</h3>
+          <p className="text-lg md:text-xl">Anda berjaya suaikan semua! Skor: {score}</p>
         </motion.div>
       )}
 
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
         {/* Terms Column */}
         <div>
-          <h3 className="text-lg font-bold text-purple-600 mb-4 text-center">📚 TERMS</h3>
-          <div className="space-y-3">
+          <h3 className="text-base md:text-lg font-bold text-purple-600 mb-3 md:mb-4 text-center">📚 TERMS</h3>
+          <div className="space-y-2 md:space-y-3">
             {matchingPairs.map(pair => (
               <motion.button
                 key={`term-${pair.id}`}
@@ -795,7 +797,7 @@ function MatchingActivity() {
                 disabled={matched.includes(pair.id)}
                 whileHover={{ scale: matched.includes(pair.id) ? 1 : 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`w-full p-4 rounded-lg font-bold text-lg transition-all ${
+                className={`w-full p-3 md:p-4 rounded-lg font-bold text-sm md:text-lg transition-all ${
                   matched.includes(pair.id)
                     ? 'bg-green-100 text-green-700 cursor-not-allowed opacity-50'
                     : selected?.id === pair.id && selected?.type === 'term'
@@ -811,8 +813,8 @@ function MatchingActivity() {
 
         {/* Matches Column */}
         <div>
-          <h3 className="text-lg font-bold text-pink-600 mb-4 text-center">💡 MAKSUD</h3>
-          <div className="space-y-3">
+          <h3 className="text-base md:text-lg font-bold text-pink-600 mb-3 md:mb-4 text-center">💡 MAKSUD</h3>
+          <div className="space-y-2 md:space-y-3">
             {shuffledMatches.map((match, index) => (
               <motion.button
                 key={`match-${index}`}
@@ -820,7 +822,7 @@ function MatchingActivity() {
                 disabled={matched.includes(match.id)}
                 whileHover={{ scale: matched.includes(match.id) ? 1 : 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`w-full p-4 rounded-lg font-bold text-lg transition-all ${
+                className={`w-full p-3 md:p-4 rounded-lg font-bold text-sm md:text-lg transition-all ${
                   matched.includes(match.id)
                     ? 'bg-green-100 text-green-700 cursor-not-allowed opacity-50'
                     : selected?.id === match.id && selected?.type === 'match'
@@ -910,14 +912,14 @@ function FillBlanksActivity() {
       transition={{ duration: 0.3 }}
       className="max-w-3xl mx-auto"
     >
-      <div className="mb-8 text-center">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">✏️ Isi Tempat Kosong!</h2>
-        <p className="text-gray-600">Pilih jawapan yang betul untuk isi tempat kosong</p>
-        <div className="mt-4 flex gap-4 justify-center">
-          <div className="bg-purple-100 text-purple-800 px-6 py-2 rounded-full font-bold">
+      <div className="mb-4 md:mb-8 text-center">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">✏️ Isi Tempat Kosong!</h2>
+        <p className="text-sm md:text-base text-gray-600">Pilih jawapan yang betul untuk isi tempat kosong</p>
+        <div className="mt-3 md:mt-4 flex gap-2 md:gap-4 justify-center flex-wrap">
+          <div className="bg-purple-100 text-purple-800 px-3 md:px-6 py-1.5 md:py-2 rounded-full font-bold text-xs md:text-base">
             Soalan {currentQuestion + 1} / {fillInBlanks.length}
           </div>
-          <div className="bg-pink-100 text-pink-800 px-6 py-2 rounded-full font-bold">
+          <div className="bg-pink-100 text-pink-800 px-3 md:px-6 py-1.5 md:py-2 rounded-full font-bold text-xs md:text-base">
             Skor: {score}
           </div>
         </div>
@@ -927,15 +929,15 @@ function FillBlanksActivity() {
         key={currentQuestion}
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
-        className="bg-white rounded-2xl shadow-xl p-8"
+        className="bg-white rounded-2xl shadow-xl p-4 md:p-8"
       >
-        <div className="mb-8">
-          <p className="text-2xl text-gray-800 leading-relaxed">
+        <div className="mb-6 md:mb-8">
+          <p className="text-base md:text-2xl text-gray-800 leading-relaxed">
             {question.question.split('_____').map((part, index) => (
               <span key={index}>
                 {part}
                 {index < question.question.split('_____').length - 1 && (
-                  <span className="inline-block mx-2 px-4 py-1 bg-gradient-to-r from-purple-200 to-pink-200 rounded-lg font-bold text-purple-900">
+                  <span className="inline-block mx-1 md:mx-2 px-2 md:px-4 py-1 bg-gradient-to-r from-purple-200 to-pink-200 rounded-lg font-bold text-purple-900 text-sm md:text-base">
                     {selectedAnswer || '?????'}
                   </span>
                 )}
@@ -944,7 +946,7 @@ function FillBlanksActivity() {
           </p>
         </div>
 
-        <div className="grid gap-4">
+        <div className="grid gap-3 md:gap-4">
           {question.options.map((option, index) => (
             <motion.button
               key={index}
@@ -952,7 +954,7 @@ function FillBlanksActivity() {
               disabled={selectedAnswer !== null}
               whileHover={{ scale: selectedAnswer ? 1 : 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className={`p-4 rounded-xl font-bold text-lg transition-all ${
+              className={`p-3 md:p-4 rounded-xl font-bold text-sm md:text-lg transition-all ${
                 selectedAnswer === option
                   ? isCorrect
                     ? 'bg-green-500 text-white shadow-lg'
@@ -965,7 +967,7 @@ function FillBlanksActivity() {
               {option}
               {selectedAnswer === option && isCorrect && ' ✓'}
               {selectedAnswer === option && !isCorrect && ' ✗'}
-              {selectedAnswer && selectedAnswer !== option && option === question.answer && ' ✓ (Jawapan Betul)'}
+              {selectedAnswer && selectedAnswer !== option && option === question.answer && ' ✓'}
             </motion.button>
           ))}
         </div>
@@ -974,7 +976,7 @@ function FillBlanksActivity() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`mt-6 p-4 rounded-xl text-center font-bold ${
+            className={`mt-4 md:mt-6 p-3 md:p-4 rounded-xl text-center font-bold text-sm md:text-base ${
               isCorrect ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
             }`}
           >
@@ -1083,17 +1085,17 @@ function LogicExerciseActivity() {
       transition={{ duration: 0.3 }}
       className="max-w-4xl mx-auto"
     >
-      <div className="mb-8 text-center">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">🧠 Latihan Logik - Brain Training!</h2>
-        <p className="text-gray-600 mb-4">Uji pemahaman konsep coding dengan senario sebenar</p>
-        <div className="flex gap-4 justify-center flex-wrap">
-          <div className="bg-purple-100 text-purple-800 px-6 py-2 rounded-full font-bold">
+      <div className="mb-4 md:mb-8 text-center">
+        <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-2">🧠 Latihan Logik</h2>
+        <p className="text-sm md:text-base text-gray-600 mb-3 md:mb-4">Uji pemahaman konsep coding dengan senario sebenar</p>
+        <div className="flex gap-2 md:gap-4 justify-center flex-wrap">
+          <div className="bg-purple-100 text-purple-800 px-3 md:px-6 py-1.5 md:py-2 rounded-full font-bold text-xs md:text-base">
             Soalan {currentQuestion + 1} / {logicExercises.length}
           </div>
-          <div className="bg-pink-100 text-pink-800 px-6 py-2 rounded-full font-bold">
+          <div className="bg-pink-100 text-pink-800 px-3 md:px-6 py-1.5 md:py-2 rounded-full font-bold text-xs md:text-base">
             Skor: {score}
           </div>
-          <div className="bg-blue-100 text-blue-800 px-6 py-2 rounded-full font-bold">
+          <div className="bg-blue-100 text-blue-800 px-3 md:px-6 py-1.5 md:py-2 rounded-full font-bold text-xs md:text-base">
             {getTypeEmoji(exercise.type)} {exercise.type.toUpperCase()}
           </div>
         </div>
@@ -1103,26 +1105,26 @@ function LogicExerciseActivity() {
         key={currentQuestion}
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
-        className="bg-white rounded-2xl shadow-xl p-8"
+        className="bg-white rounded-2xl shadow-xl p-4 md:p-8"
       >
-        <div className="mb-6">
-          <h3 className="text-2xl font-bold text-purple-600 mb-4">{exercise.title}</h3>
+        <div className="mb-4 md:mb-6">
+          <h3 className="text-lg md:text-2xl font-bold text-purple-600 mb-3 md:mb-4">{exercise.title}</h3>
 
           {/* Scenario Box */}
-          <div className="bg-gray-50 rounded-xl p-6 mb-6 border-l-4 border-purple-500">
-            <p className="text-lg text-gray-800 whitespace-pre-line font-mono leading-relaxed">
+          <div className="bg-gray-50 rounded-xl p-3 md:p-6 mb-4 md:mb-6 border-l-4 border-purple-500">
+            <p className="text-sm md:text-lg text-gray-800 whitespace-pre-line font-mono leading-relaxed">
               {exercise.scenario}
             </p>
           </div>
 
           {/* Question */}
-          <p className="text-xl font-bold text-gray-900 mb-6">
+          <p className="text-base md:text-xl font-bold text-gray-900 mb-4 md:mb-6">
             ❓ {exercise.question}
           </p>
         </div>
 
         {/* Options */}
-        <div className="grid gap-4 mb-6">
+        <div className="grid gap-3 md:gap-4 mb-4 md:mb-6">
           {exercise.options.map((option, index) => (
             <motion.button
               key={index}
@@ -1130,7 +1132,7 @@ function LogicExerciseActivity() {
               disabled={selectedAnswer !== null}
               whileHover={{ scale: selectedAnswer ? 1 : 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className={`p-4 rounded-xl font-bold text-lg transition-all text-left ${
+              className={`p-3 md:p-4 rounded-xl font-bold text-sm md:text-lg transition-all text-left ${
                 selectedAnswer === option
                   ? isCorrect
                     ? 'bg-green-500 text-white shadow-lg'
@@ -1155,18 +1157,18 @@ function LogicExerciseActivity() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className={`p-6 rounded-xl mb-4 ${
+            <div className={`p-4 md:p-6 rounded-xl mb-4 ${
               isCorrect ? 'bg-green-50 border-2 border-green-300' : 'bg-yellow-50 border-2 border-yellow-300'
             }`}>
-              <p className="font-bold text-lg mb-2">
+              <p className="font-bold text-base md:text-lg mb-2">
                 {isCorrect ? '✅ Betul!' : '📚 Mari Belajar:'}
               </p>
-              <p className="text-gray-800">{exercise.explanation}</p>
+              <p className="text-sm md:text-base text-gray-800">{exercise.explanation}</p>
             </div>
 
             <button
               onClick={handleNext}
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-4 rounded-xl hover:shadow-lg transition-all"
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 md:py-4 rounded-xl hover:shadow-lg transition-all text-sm md:text-base"
             >
               {currentQuestion < logicExercises.length - 1 ? 'Soalan Seterusnya →' : 'Lihat Keputusan 🎉'}
             </button>
@@ -1260,14 +1262,14 @@ function CodePatternsActivity() {
       transition={{ duration: 0.3 }}
       className="max-w-4xl mx-auto"
     >
-      <div className="mb-8 text-center">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">🔍 Cari Pattern dalam Code</h2>
-        <p className="text-gray-600 mb-4">Baca code dan ramalkan output atau jawapan yang betul!</p>
-        <div className="flex gap-4 justify-center">
-          <div className="bg-blue-100 text-blue-800 px-6 py-2 rounded-full font-bold">
+      <div className="mb-4 md:mb-8 text-center">
+        <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-2">🔍 Cari Pattern</h2>
+        <p className="text-sm md:text-base text-gray-600 mb-3 md:mb-4">Baca code dan ramalkan output atau jawapan yang betul!</p>
+        <div className="flex gap-2 md:gap-4 justify-center flex-wrap">
+          <div className="bg-blue-100 text-blue-800 px-3 md:px-6 py-1.5 md:py-2 rounded-full font-bold text-xs md:text-base">
             Soalan {currentQuestion + 1} / {codePatterns.length}
           </div>
-          <div className="bg-purple-100 text-purple-800 px-6 py-2 rounded-full font-bold">
+          <div className="bg-purple-100 text-purple-800 px-3 md:px-6 py-1.5 md:py-2 rounded-full font-bold text-xs md:text-base">
             Skor: {score}
           </div>
         </div>
@@ -1277,17 +1279,17 @@ function CodePatternsActivity() {
         key={currentQuestion}
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
-        className="bg-white rounded-2xl shadow-xl p-8"
+        className="bg-white rounded-2xl shadow-xl p-4 md:p-8"
       >
-        <h3 className="text-2xl font-bold text-blue-600 mb-6">{pattern.title}</h3>
+        <h3 className="text-lg md:text-2xl font-bold text-blue-600 mb-4 md:mb-6">{pattern.title}</h3>
 
         {/* Code Display */}
-        <div className="bg-gray-900 text-green-400 rounded-xl p-6 mb-6 font-mono text-sm overflow-x-auto">
+        <div className="bg-gray-900 text-green-400 rounded-xl p-3 md:p-6 mb-4 md:mb-6 font-mono text-xs md:text-sm overflow-x-auto">
           <pre className="whitespace-pre">{pattern.code}</pre>
         </div>
 
         {/* Question */}
-        <p className="text-xl font-bold text-gray-900 mb-6">
+        <p className="text-base md:text-xl font-bold text-gray-900 mb-4 md:mb-6">
           ❓ {pattern.question}
         </p>
 
@@ -1295,7 +1297,7 @@ function CodePatternsActivity() {
         {!selectedAnswer && (
           <button
             onClick={() => setShowHint(!showHint)}
-            className="mb-4 px-4 py-2 bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200 transition-colors font-medium"
+            className="mb-3 md:mb-4 px-3 md:px-4 py-1.5 md:py-2 bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200 transition-colors font-medium text-xs md:text-base"
           >
             💡 {showHint ? 'Sembunyikan Hint' : 'Tunjuk Hint'}
           </button>
@@ -1305,14 +1307,14 @@ function CodePatternsActivity() {
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
-            className="mb-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded"
+            className="mb-4 md:mb-6 p-3 md:p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded"
           >
-            <p className="text-gray-700">{pattern.hint}</p>
+            <p className="text-sm md:text-base text-gray-700">{pattern.hint}</p>
           </motion.div>
         )}
 
         {/* Options */}
-        <div className="grid gap-4">
+        <div className="grid gap-3 md:gap-4">
           {pattern.options.map((option, index) => (
             <motion.button
               key={index}
@@ -1320,7 +1322,7 @@ function CodePatternsActivity() {
               disabled={selectedAnswer !== null}
               whileHover={{ scale: selectedAnswer ? 1 : 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className={`p-4 rounded-xl font-bold text-lg transition-all ${
+              className={`p-3 md:p-4 rounded-xl font-bold text-sm md:text-lg transition-all ${
                 selectedAnswer === option
                   ? isCorrect
                     ? 'bg-green-500 text-white shadow-lg'
@@ -1333,7 +1335,7 @@ function CodePatternsActivity() {
               {option}
               {selectedAnswer === option && isCorrect && ' ✓'}
               {selectedAnswer === option && !isCorrect && ' ✗'}
-              {selectedAnswer && selectedAnswer !== option && option === pattern.answer && ' ✓ (Jawapan Betul)'}
+              {selectedAnswer && selectedAnswer !== option && option === pattern.answer && ' ✓'}
             </motion.button>
           ))}
         </div>
@@ -1342,7 +1344,7 @@ function CodePatternsActivity() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`mt-6 p-4 rounded-xl text-center font-bold ${
+            className={`mt-4 md:mt-6 p-3 md:p-4 rounded-xl text-center font-bold text-sm md:text-base ${
               isCorrect ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
             }`}
           >
