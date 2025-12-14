@@ -1,7 +1,7 @@
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth, getLoginUrl, getSubscribeUrl } from '../contexts/AuthContext'
 
 export default function ProtectedRoute({ children }) {
-  const { user, profile, loading, error, isSubscribed } = useAuth()
+  const { user, profile, loading, isSubscribed } = useAuth()
 
   // Loading state
   if (loading) {
@@ -21,81 +21,13 @@ export default function ProtectedRoute({ children }) {
     )
   }
 
-  // Error state
-  if (error) {
-    return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        background: '#fef2f2'
-      }}>
-        <div style={{ textAlign: 'center', maxWidth: '500px', padding: '2rem' }}>
-          <div style={{ fontSize: '64px', marginBottom: '1rem' }}>❌</div>
-          <h1 style={{ fontSize: '24px', marginBottom: '1rem', color: '#991b1b' }}>
-            Authentication Error
-          </h1>
-          <p style={{ fontSize: '16px', color: '#7f1d1d', marginBottom: '2rem' }}>
-            {error}
-          </p>
-          <a
-            href="https://juniorcodelab.com/Login"
-            style={{
-              display: 'inline-block',
-              background: '#dc2626',
-              color: 'white',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '8px',
-              textDecoration: 'none',
-              fontWeight: '600'
-            }}
-          >
-            Back to Login
-          </a>
-        </div>
-      </div>
-    )
-  }
-
-  // Not authenticated
+  // Not authenticated - redirect to login
   if (!user) {
-    return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        background: '#f9fafb'
-      }}>
-        <div style={{ textAlign: 'center', maxWidth: '500px', padding: '2rem' }}>
-          <div style={{ fontSize: '64px', marginBottom: '1rem' }}>🔒</div>
-          <h1 style={{ fontSize: '24px', marginBottom: '1rem', color: '#111827' }}>
-            Login Required
-          </h1>
-          <p style={{ fontSize: '16px', color: '#6b7280', marginBottom: '2rem' }}>
-            You need to login to access the playground
-          </p>
-          <a
-            href="https://juniorcodelab.com/Login"
-            style={{
-              display: 'inline-block',
-              background: '#3b82f6',
-              color: 'white',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '8px',
-              textDecoration: 'none',
-              fontWeight: '600'
-            }}
-          >
-            Login Now
-          </a>
-        </div>
-      </div>
-    )
+    window.location.href = getLoginUrl()
+    return null
   }
 
-  // Not subscribed
+  // Not subscribed - show subscribe page
   if (!isSubscribed) {
     return (
       <div style={{
@@ -129,43 +61,26 @@ export default function ProtectedRoute({ children }) {
               Current status: <strong>{profile.subscription_status || 'inactive'}</strong>
             </p>
           )}
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a
-              href="https://juniorcodelab.com/Subscribe"
-              style={{
-                display: 'inline-block',
-                background: 'white',
-                color: '#764ba2',
-                padding: '0.75rem 1.5rem',
-                borderRadius: '8px',
-                textDecoration: 'none',
-                fontWeight: '600'
-              }}
-            >
-              Subscribe Now
-            </a>
-            <a
-              href="https://juniorcodelab.com"
-              style={{
-                display: 'inline-block',
-                background: 'rgba(255,255,255,0.2)',
-                color: 'white',
-                padding: '0.75rem 1.5rem',
-                borderRadius: '8px',
-                textDecoration: 'none',
-                fontWeight: '600',
-                border: '2px solid white'
-              }}
-            >
-              Back to Home
-            </a>
-          </div>
+          <a
+            href={getSubscribeUrl()}
+            style={{
+              display: 'inline-block',
+              background: 'white',
+              color: '#764ba2',
+              padding: '0.75rem 2rem',
+              borderRadius: '8px',
+              textDecoration: 'none',
+              fontWeight: '600',
+              fontSize: '16px'
+            }}
+          >
+            Subscribe Now
+          </a>
         </div>
       </div>
     )
   }
 
   // All good - show playground
-  console.log('✅ [ProtectedRoute] Access granted')
   return children
 }
