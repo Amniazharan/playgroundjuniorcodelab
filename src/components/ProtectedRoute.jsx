@@ -20,12 +20,27 @@ export default function ProtectedRoute({ children }) {
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '100vh',
-        background: '#f9fafb'
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
       }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '48px', marginBottom: '1rem' }}>🔐</div>
-          <p style={{ fontSize: '18px', color: '#6b7280' }}>Loading...</p>
+        <div style={{ textAlign: 'center', color: 'white' }}>
+          <div style={{
+            fontSize: '64px',
+            marginBottom: '1rem',
+            animation: 'pulse 2s ease-in-out infinite'
+          }}>🔐</div>
+          <p style={{ fontSize: '20px', fontWeight: '600', marginBottom: '0.5rem' }}>
+            Authenticating...
+          </p>
+          <p style={{ fontSize: '14px', opacity: 0.8 }}>
+            Please wait while we verify your session
+          </p>
         </div>
+        <style>{`
+          @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+          }
+        `}</style>
       </div>
     )
   }

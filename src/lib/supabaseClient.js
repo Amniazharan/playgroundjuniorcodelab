@@ -13,5 +13,21 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables. Please check .env.local file.')
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
-console.log('✅ [SUPABASE] Client created successfully')
+// Configure Supabase client with proper auth settings for Phase 2
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    // CRITICAL: Disable auto-refresh initially to prevent race conditions
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: false, // We handle auth manually via URL params
+    flowType: 'pkce',
+    storage: window.localStorage,
+    storageKey: 'kodkids-playground-auth', // Unique key untuk Phase 2
+    debug: import.meta.env.DEV
+  }
+})
+
+console.log('✅ [SUPABASE] Client created with auth config')
+console.log('🔌 [SUPABASE] Storage key: kodkids-playground-auth')
+console.log('🔌 [SUPABASE] Persist session: true')
+console.log('🔌 [SUPABASE] Auto refresh: true')

@@ -45,6 +45,12 @@ export const AuthProvider = ({ children }) => {
       console.log('🔐 [AUTH] Starting authentication...')
       console.log('🔐 [AUTH] Current URL:', window.location.href)
 
+      // Timeout protection - prevent infinite loading
+      const authTimeout = setTimeout(() => {
+        console.error('❌ [AUTH] Authentication timeout (10s)')
+        setLoading(false)
+      }, 10000) // 10 second timeout
+
       try {
         // Check URL parameters first (from Phase 1 redirect)
         const urlParams = new URLSearchParams(window.location.search)
@@ -53,26 +59,85 @@ export const AuthProvider = ({ children }) => {
 
         if (authParam) {
           console.log('🔐 [AUTH] Decoding auth data...')
-          // Decode auth data from Phase 1
-          const authData = JSON.parse(atob(authParam))
-          console.log('🔐 [AUTH] Auth data decoded successfully')
+          try {
+            // Decode auth data from Phase 1
+            const authData = JSON.parse(atob(authParam))
+            console.log('🔐 [AUTH] Auth data decoded successfully')
+            console.log('🔐 [AUTH] Access token length:', authData.access_token?.length)
+            console.log('🔐 [AUTH] Refresh token exists:', !!authData.refresh_token)
 
-          // Set session
-          console.log('🔐 [AUTH] Setting Supabase session...')
-          const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
-            access_token: authData.access_token,
-            refresh_token: authData.refresh_token
-          })
+            // Validate tokens exist
+            if (!authData.access_token || !authData.refresh_token) {
+              console.error('❌ [AUTH] Missing tokens in auth data')
+              throw new Error('Invalid auth data: missing tokens')
+            }
 
-          if (sessionError) {
-            console.error('❌ [AUTH] Session error:', sessionError)
-            setLoading(false)
-            return
-          }
+            // Set session with retry logic
+            console.log('🔐 [AUTH] Setting Supabase session...')
+            let sessionData, sessionError
+            let retryCount = 0
+            const maxRetries = 2
 
-          console.log('✅ [AUTH] Session set successfully:', sessionData.user?.email)
+            while (retryCount < maxRetries) {
+              const result = await supabase.auth.setSession({
+                access_token: authData.access_token,
+                refresh_token: authData.refresh_token
+              })
 
-          if (sessionData?.user) {
+              sessionData = result.data
+              sessionError = result.error
+
+              console.log(`🔐 [AUTH] setSession attempt ${retryCount + 1}/${maxRetries}`)
+              console.log('🔐 [AUTH] Response:', {
+                hasData: !!sessionData,
+                hasError: !!sessionError,
+                hasUser: !!sessionData?.user,
+                hasSession: !!sessionData?.session,
+                errorMessage: sessionError?.message
+              })
+
+              // If successful or non-retryable error, break
+              if (!sessionError || sessionError.status === 401) {
+                break
+              }
+
+              retryCount++
+              if (retryCount < maxRetries) {
+                console.log('⚠️ [AUTH] Retrying in 1s...')
+                await new Promise(resolve => setTimeout(resolve, 1000))
+              }
+            }
+
+            if (sessionError) {
+              console.error('❌ [AUTH] Session error after retries:', sessionError)
+              console.error('❌ [AUTH] Error details:', {
+                message: sessionError.message,
+                status: sessionError.status,
+                name: sessionError.name,
+                code: sessionError.code
+              })
+
+              // Clean URL and redirect to login
+              window.history.replaceState({}, document.title, window.location.pathname)
+              clearTimeout(authTimeout)
+              setLoading(false)
+              return
+            }
+
+            if (!sessionData?.user) {
+              console.error('❌ [AUTH] No user in session data')
+              console.error('❌ [AUTH] Full session data:', sessionData)
+
+              // Clean URL and redirect to login
+              window.history.replaceState({}, document.title, window.location.pathname)
+              clearTimeout(authTimeout)
+              setLoading(false)
+              return
+            }
+
+            console.log('✅ [AUTH] Session set successfully:', sessionData.user?.email)
+            console.log('✅ [AUTH] User ID:', sessionData.user?.id)
+
             setUser(sessionData.user)
 
             // Fetch profile
@@ -85,17 +150,24 @@ export const AuthProvider = ({ children }) => {
 
             if (profileError) {
               console.error('❌ [AUTH] Profile fetch error:', profileError)
+              // Continue even if profile fetch fails - user is still authenticated
             } else {
               console.log('✅ [AUTH] Profile fetched:', profileData?.subscription_status)
               setProfile(profileData)
             }
 
             // Clean URL
+            console.log('🔐 [AUTH] Cleaning URL...')
+            window.history.replaceState({}, document.title, window.location.pathname)
+
+          } catch (decodeError) {
+            console.error('❌ [AUTH] Failed to decode auth param:', decodeError)
+            // Clean URL and let it fall through to session check
             window.history.replaceState({}, document.title, window.location.pathname)
           }
         } else {
           // Check existing session
-          console.log('🔐 [AUTH] Checking existing session...')
+          console.log('🔐 [AUTH] No auth param - checking existing session...')
           const { data: { session }, error: sessionError } = await supabase.auth.getSession()
 
           if (sessionError) {
@@ -126,7 +198,9 @@ export const AuthProvider = ({ children }) => {
         }
       } catch (error) {
         console.error('❌ [AUTH] Fatal error:', error)
+        console.error('❌ [AUTH] Error stack:', error.stack)
       } finally {
+        clearTimeout(authTimeout)
         console.log('🔐 [AUTH] Authentication complete. Loading:', false)
         setLoading(false)
       }
