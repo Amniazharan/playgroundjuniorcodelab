@@ -42,38 +42,51 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const initAuth = async () => {
+      console.log('🔐 [AUTH] Starting authentication...')
+      console.log('🔐 [AUTH] Current URL:', window.location.href)
+
       try {
         // Check URL parameters first (from Phase 1 redirect)
         const urlParams = new URLSearchParams(window.location.search)
         const authParam = urlParams.get('auth')
+        console.log('🔐 [AUTH] Auth param from URL:', authParam ? 'Found' : 'Not found')
 
         if (authParam) {
+          console.log('🔐 [AUTH] Decoding auth data...')
           // Decode auth data from Phase 1
           const authData = JSON.parse(atob(authParam))
+          console.log('🔐 [AUTH] Auth data decoded successfully')
 
           // Set session
+          console.log('🔐 [AUTH] Setting Supabase session...')
           const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
             access_token: authData.access_token,
             refresh_token: authData.refresh_token
           })
 
           if (sessionError) {
-            console.error('Session error:', sessionError)
+            console.error('❌ [AUTH] Session error:', sessionError)
             setLoading(false)
             return
           }
+
+          console.log('✅ [AUTH] Session set successfully:', sessionData.user?.email)
 
           if (sessionData?.user) {
             setUser(sessionData.user)
 
             // Fetch profile
-            const { data: profileData } = await supabase
+            console.log('🔐 [AUTH] Fetching user profile...')
+            const { data: profileData, error: profileError } = await supabase
               .from('profiles')
               .select('*')
               .eq('id', sessionData.user.id)
               .single()
 
-            if (profileData) {
+            if (profileError) {
+              console.error('❌ [AUTH] Profile fetch error:', profileError)
+            } else {
+              console.log('✅ [AUTH] Profile fetched:', profileData?.subscription_status)
               setProfile(profileData)
             }
 
@@ -82,26 +95,39 @@ export const AuthProvider = ({ children }) => {
           }
         } else {
           // Check existing session
-          const { data: { session } } = await supabase.auth.getSession()
+          console.log('🔐 [AUTH] Checking existing session...')
+          const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+
+          if (sessionError) {
+            console.error('❌ [AUTH] Get session error:', sessionError)
+          }
 
           if (session?.user) {
+            console.log('✅ [AUTH] Existing session found:', session.user.email)
             setUser(session.user)
 
             // Fetch profile
-            const { data: profileData } = await supabase
+            console.log('🔐 [AUTH] Fetching user profile...')
+            const { data: profileData, error: profileError } = await supabase
               .from('profiles')
               .select('*')
               .eq('id', session.user.id)
               .single()
 
-            if (profileData) {
+            if (profileError) {
+              console.error('❌ [AUTH] Profile fetch error:', profileError)
+            } else {
+              console.log('✅ [AUTH] Profile fetched:', profileData?.subscription_status)
               setProfile(profileData)
             }
+          } else {
+            console.log('⚠️ [AUTH] No existing session found')
           }
         }
       } catch (error) {
-        console.error('Auth error:', error)
+        console.error('❌ [AUTH] Fatal error:', error)
       } finally {
+        console.log('🔐 [AUTH] Authentication complete. Loading:', false)
         setLoading(false)
       }
     }

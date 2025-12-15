@@ -3,8 +3,17 @@ import { useAuth, getLoginUrl, getSubscribeUrl } from '../contexts/AuthContext'
 export default function ProtectedRoute({ children }) {
   const { user, profile, loading, isSubscribed } = useAuth()
 
+  console.log('🛡️ [PROTECTED] Route check:', {
+    loading,
+    hasUser: !!user,
+    userEmail: user?.email,
+    isSubscribed,
+    subscriptionStatus: profile?.subscription_status
+  })
+
   // Loading state
   if (loading) {
+    console.log('🛡️ [PROTECTED] Showing loading screen')
     return (
       <div style={{
         display: 'flex',
@@ -23,12 +32,15 @@ export default function ProtectedRoute({ children }) {
 
   // Not authenticated - redirect to login
   if (!user) {
+    console.log('🛡️ [PROTECTED] No user - redirecting to login')
+    console.log('🛡️ [PROTECTED] Redirect URL:', getLoginUrl())
     window.location.href = getLoginUrl()
     return null
   }
 
   // Not subscribed - show subscribe page
   if (!isSubscribed) {
+    console.log('🛡️ [PROTECTED] User not subscribed - showing subscribe page')
     return (
       <div style={{
         display: 'flex',
@@ -82,5 +94,6 @@ export default function ProtectedRoute({ children }) {
   }
 
   // All good - show playground
+  console.log('🛡️ [PROTECTED] All checks passed - rendering playground')
   return children
 }
