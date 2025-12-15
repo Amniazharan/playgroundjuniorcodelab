@@ -36,16 +36,10 @@ export default function ExerciseWorkspace() {
   const [generatedCode, setGeneratedCode] = useState('')
 
   const handleCodeGenerated = (code) => {
-    console.log('========= CODE GENERATION DEBUG =========')
-    console.log('Generated code:', code)
-    console.log('Exercise ID:', exercise.id, 'Type:', typeof exercise.id)
-    console.log('Code length:', code ? code.length : 0)
-
     setGeneratedCode(code)
 
     // Check if code is empty
     if (!code || code.trim() === '') {
-      console.warn('⚠️ No code generated - workspace might be empty')
       setOutput(null)
       return
     }
@@ -55,54 +49,40 @@ export default function ExerciseWorkspace() {
     try {
       switch (exercise.id) {
         case 1: // Pizza Builder
-          console.log('🍕 Executing Pizza Code')
           result = executePizzaCode(code)
           break
         case 2: // Burger Builder
-          console.log('🍔 Executing Burger Code')
           result = executeBurgerCode(code)
           break
         case 3: // Ice Cream Maker
-          console.log('🍦 Executing Ice Cream Code')
           result = executeIceCreamCode(code)
           break
         case 4: // Snowman
-          console.log('⛄ Executing Snowman Code')
           result = executeSnowmanCode(code)
           break
         case 5: // Garden
-          console.log('🌻 Executing Garden Code')
           result = executeGardenCode(code)
           break
         case 6: // Rainbow
-          console.log('🌈 Executing Rainbow Code')
           result = executeRainbowCode(code)
           break
         case 7: // Aquarium
-          console.log('🐠 Executing Aquarium Code')
           result = executeAquariumCode(code)
           break
         case 8: // Rocket
-          console.log('🚀 Executing Rocket Code')
           result = executeRocketCode(code)
           break
         case 9: // Butterfly
-          console.log('🦋 Executing Butterfly Code')
           result = executeButterflyCode(code)
           break
         case 10: // Electric Circuit
-          console.log('⚡ Executing Circuit Code')
           result = executeCircuitCode(code)
           break
         default:
-          console.warn('❌ Unknown exercise ID:', exercise.id)
           result = null
       }
-
-      console.log('✅ Execution result:', result)
-      console.log('========================================')
     } catch (error) {
-      console.error('❌ Error during execution:', error)
+      console.error('Error during execution:', error)
       result = null
     }
 

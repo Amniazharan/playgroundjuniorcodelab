@@ -7,7 +7,18 @@ export const useAuth = () => useContext(AuthContext)
 
 // Helper functions untuk environment-aware URLs
 export const getAppUrl = () => {
-  return import.meta.env.VITE_APP_URL || 'http://localhost:3000'
+  // Priority 1: Use explicit environment variable
+  if (import.meta.env.VITE_APP_URL) {
+    return import.meta.env.VITE_APP_URL
+  }
+
+  // Priority 2: Auto-detect from window.location (works anywhere!)
+  if (typeof window !== 'undefined') {
+    return `${window.location.protocol}//${window.location.host}${import.meta.env.BASE_URL || ''}`
+  }
+
+  // Priority 3: Fallback for SSR/build time
+  return 'http://localhost:3000'
 }
 
 export const getLoginUrl = () => {

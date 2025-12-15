@@ -4,9 +4,13 @@ dist
 *.log
 .env
 .env.local
-.env.development
-.env.production
+.env.*.local
 package-lock.json
+
+# Allow environment templates and production config
+!.env.example
+!.env.production
+!.env.staging
 
 # Ignore all markdown documentation files
 *.md

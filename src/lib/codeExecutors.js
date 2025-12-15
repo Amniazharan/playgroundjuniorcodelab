@@ -76,11 +76,7 @@ export const executePizzaCode = (code) => {
   }
 
   try {
-    // Convert Python code to JavaScript and execute
     const jsCode = pythonToJS(code)
-    console.log('Converted JS code:', jsCode)
-
-    // Use Function constructor with explicit context to avoid minification issues
     const executeCode = new Function('add_base', 'add_topping', 'bake_pizza', jsCode)
     executeCode(add_base, add_topping, bake_pizza)
   } catch (error) {
@@ -111,7 +107,6 @@ export const executeBurgerCode = (code) => {
 
   try {
     const jsCode = pythonToJS(code)
-    console.log('Converted JS code:', jsCode)
     const executeCode = new Function('add_bottom_bun', 'add_top_bun', 'add_layer', jsCode)
     executeCode(add_bottom_bun, add_top_bun, add_layer)
   } catch (error) {
@@ -144,7 +139,6 @@ export const executeIceCreamCode = (code) => {
 
   try {
     const jsCode = pythonToJS(code)
-    console.log('Converted JS code:', jsCode)
     const executeCode = new Function('set_base', 'add_scoop', 'add_topping', jsCode)
     executeCode(set_base, add_scoop, add_topping)
   } catch (error) {
@@ -171,7 +165,6 @@ export const executeSnowmanCode = (code) => {
 
   try {
     const jsCode = pythonToJS(code)
-    console.log('Converted JS code:', jsCode)
     const executeCode = new Function('add_snowball', 'add_accessory', jsCode)
     executeCode(add_snowball, add_accessory)
   } catch (error) {
@@ -208,7 +201,6 @@ export const executeGardenCode = (code) => {
 
   try {
     const jsCode = pythonToJS(code)
-    console.log('Converted JS code:', jsCode)
     const executeCode = new Function('plant_seed', 'water_plants', 'add_sunshine', 'add_fertilizer', jsCode)
     executeCode(plant_seed, water_plants, add_sunshine, add_fertilizer)
   } catch (error) {
@@ -235,7 +227,6 @@ export const executeRainbowCode = (code) => {
 
   try {
     const jsCode = pythonToJS(code)
-    console.log('Converted JS code:', jsCode)
     const executeCode = new Function('paint_color', 'add_decoration', jsCode)
     executeCode(paint_color, add_decoration)
   } catch (error) {
@@ -272,7 +263,6 @@ export const executeAquariumCode = (code) => {
 
   try {
     const jsCode = pythonToJS(code)
-    console.log('Converted JS code:', jsCode)
     const executeCode = new Function('fill_water', 'add_bottom', 'add_fish', 'add_decoration', jsCode)
     executeCode(fill_water, add_bottom, add_fish, add_decoration)
   } catch (error) {
@@ -304,7 +294,6 @@ export const executeRocketCode = (code) => {
 
   try {
     const jsCode = pythonToJS(code)
-    console.log('Converted JS code:', jsCode)
     const executeCode = new Function('add_part', 'fuel_rocket', 'launch_rocket', jsCode)
     executeCode(add_part, fuel_rocket, launch_rocket)
   } catch (error) {
@@ -336,7 +325,6 @@ export const executeCakeCode = (code) => {
 
   try {
     const jsCode = pythonToJS(code)
-    console.log('Converted JS code:', jsCode)
     const executeCode = new Function('add_layer', 'add_frosting', 'add_decoration', jsCode)
     executeCode(add_layer, add_frosting, add_decoration)
   } catch (error) {
@@ -363,7 +351,6 @@ export const executeButterflyCode = (code) => {
 
   try {
     const jsCode = pythonToJS(code)
-    console.log('Converted JS code:', jsCode)
     const executeCode = new Function('add_stage', 'add_environment', jsCode)
     executeCode(add_stage, add_environment)
   } catch (error) {
@@ -399,7 +386,6 @@ export const executeCircuitCode = (code) => {
 
   try {
     const jsCode = pythonToJS(code)
-    console.log('Converted JS code:', jsCode)
     const executeCode = new Function('add_component', 'close_circuit', 'turn_on_switch', 'turn_off_switch', jsCode)
     executeCode(add_component, close_circuit, turn_on_switch, turn_off_switch)
   } catch (error) {
