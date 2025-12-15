@@ -15,7 +15,8 @@
 [build.environment]
   NODE_VERSION = "18"
   VITE_ENV = "production"
-  VITE_BASE_PATH = "/playground/"
+  VITE_APP_URL = "https://playgroundjuniorcodelab.netlify.app"
+  VITE_BASE_PATH = "/"
   # Disable secrets scanning for Supabase anon key (safe for frontend)
   SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_ANON_KEY"
 
